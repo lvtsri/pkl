@@ -1,7 +1,8 @@
 <?php 
     require_once '../database/koneksi.php';
 
-    $pengguna = isset($_GET['user']) ? $_GET['user'] : '';
+    // $pengguna = isset($_GET['user']) ? $_GET['user'] : '';
+    $pengguna = @$_GET['user'];
 
     // Jika parameter kosong
     if (empty($pengguna)) {
@@ -13,9 +14,10 @@
     $data = mysqli_fetch_assoc($query_dosen);
     $nama = $data ? $data['nama'] : $pengguna;
 
-    $hapus_pengguna = mysqli_query($koneksi, "DELETE FROM tb_dosen WHERE nik = '$pengguna'") or die (mysqli_error($koneksi));
+    $hapus_dosen = mysqli_query($koneksi, "DELETE FROM tb_dosen WHERE nik = '$pengguna'") or die (mysqli_error($koneksi));
+    $hapus_pengguna = mysqli_query($koneksi, "DELETE FROM tb_pengguna WHERE username = '$pengguna'") or die (mysqli_error($koneksi));
 
-    if ($hapus_pengguna) {
+    if ($hapus_dosen && $hapus_pengguna) {
         echo '
         <script>
             alert("Data Pengguna ' . $nama . ' (NIK: ' . $pengguna . ') Berhasil Dihapus");

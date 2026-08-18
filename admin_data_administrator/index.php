@@ -145,18 +145,14 @@
 
                                 </td>
                                 <td>
-                                  <a href="hapus.php?user=<?= $data['username']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
-                                    <i class="fas fa-trash"></i>
-                                    Hapus
-                                  </a>
                                   <a href="edit.php?user=<?= $data['username']; ?>" class="btn btn-warning btn-sm">
                                     <i class="fas fa-pen"></i>
                                     Edit
                                   </a>
-                                  <!-- <a href="edit.php" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-pen"></i>
-                                    Edit
-                                  </a> -->
+                                  <a href="hapus.php?user=<?= $data['username']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
+                                    <i class="fas fa-trash"></i>
+                                    Hapus
+                                  </a>
                                 </td>
                             </tr>
                             <?php

@@ -2,7 +2,7 @@
     require_once '../database/koneksi.php';
 
     // Ambil parameter NIM dari URL (?user=...)
-    $pengguna = isset($_GET['user']) ? $_GET['user'] : '';
+    $pengguna = @$_GET['user'];
 
     // Jika parameter kosong
     if (empty($pengguna)) {
@@ -15,9 +15,11 @@
     $data = mysqli_fetch_assoc($query_mhs);
     $nama = $data ? $data['nama'] : $pengguna;
 
-    $hapus_pengguna = mysqli_query($koneksi, "DELETE FROM tb_mahasiswa WHERE nim = '$pengguna'") or die (mysqli_error($koneksi));
+    $hapus_mhs = mysqli_query($koneksi, "DELETE FROM tb_mahasiswa WHERE nim = '$pengguna'") or die (mysqli_error($koneksi));
+    // Tambah query ini buat hapus di tb pengguna
+    $hapus_pengguna = mysqli_query($koneksi, "DELETE FROM tb_pengguna WHERE username = '$pengguna'") or die (mysqli_error($koneksi));
 
-    if ($hapus_pengguna) {
+    if ($hapus_mhs && $hapus_pengguna) {
         echo '
         <script>
             alert("Data Pengguna ' . $nama . ' (NIM: ' . $pengguna . ') Berhasil Dihapus");

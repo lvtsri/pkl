@@ -74,7 +74,7 @@
             $rv = mysqli_num_rows($query_cek);
             
             if ($rv == 0){
-              // Jika login gagal: Munculkan SweetAlert Toast di pojok kanan atas
+              // SweetAlert di pojok kanan atas
               echo '
                 <script>
                   $(document).ready(function(){
@@ -116,10 +116,14 @@
               // PIN Valid! Ambil peran user
               $data = mysqli_fetch_assoc($query_pin);
               $peran = $data['peran'];
+              $pin = $data['pin'];
+              $nama = $data['nama'];
 
               // Set session utama resmi
               $_SESSION['username'] = $username_aktif;
               $_SESSION['peran'] = $peran;
+              $_SESSION['pin'] = $pin;
+              $_SESSION['nama'] = $nama;
 
               // Hapus session temporary
               unset($_SESSION['temp_username']);
@@ -163,7 +167,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <p class="text-info">Login berhasil! Masukkan PIN keamanan Anda untuk melanjutkan ke halaman utama:</p>
+            <p class="text-info">Login berhasil! Masukkan PIN keamanan Anda untuk lanjut ke halaman utama:</p>
             <div class="form-group">
               <input type="password" name="pin" class="form-control" placeholder="Masukkan PIN Anda" maxlength="6" required autofocus>
             </div>

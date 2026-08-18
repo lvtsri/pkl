@@ -6,7 +6,7 @@
   <?php
   include '../css.php';
   session_start();
-  $hal = 'beranda_mhs';
+  $hal = 'beranda_makul';
   ?>
 </head>
 <!--
@@ -45,7 +45,7 @@
           </a>
 
           <div class="dropdown-divider"></div>
-          <a href="../logout.php" class="dropdown-item">
+          <a href="#" class="dropdown-item">
             <i class="fas fa-sign-out-alt mr-2"></i> Keluar
           </a>
         </div>
@@ -69,7 +69,7 @@
       </div>
       <!-- Sidebar Menu -->
         <?php
-        include '../sidebar_mahasiswa.php';
+        include '../sidebar_admin.php';
         ?>
       <!-- /.sidebar-menu -->
     </div>
@@ -91,7 +91,7 @@
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-
+        <p>halaman makul</p>
       </div>
       <!-- /.container-fluid -->
     </div>

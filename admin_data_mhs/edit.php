@@ -93,13 +93,11 @@ require_once '../database/koneksi.php';
           <!-- /.card-header -->
           <div class="card-body">
               <?php 
+              // Caraku
               $pengguna = isset($_GET['user']) ? $_GET['user'] : '';
-
-              // Ambil data mahasiswa dari database berdasarkan NIM
               $query_mhs = mysqli_query($koneksi, "SELECT * FROM tb_mahasiswa WHERE nim = '$pengguna'");
               $data = mysqli_fetch_assoc($query_mhs);
 
-              // Jika data tidak ditemukan, kembalikan ke halaman data mhs
               if (!$data) {
                   echo '<script>alert("Data tidak ditemukan!"); window.location.href="../admin_data_mhs";</script>';
                   exit;
@@ -110,6 +108,16 @@ require_once '../database/koneksi.php';
               $kontak = $data['kontak'];
               $email = $data['email'];
               $kelamin = $data['kelamin'];
+
+              // Caranya mas Matien, mirip ternyata, cuma beda yang $_GET
+              // $nim = @$_GET['nim'];
+              // $query_ambil_mhs = mysqli_query($koneksi, "SELECT * FROM tb_mahasiswa WHERE nim = '$nim'");
+              // $data_mhs = mysqli_fetch_array($query_ambil_mhs);
+
+              // $nama = $data_mhs['nama'];
+              // $kontak = $data_mhs['kontak'];
+              // $email = $data_mhs['email'];
+              // $kelamin = $data_mhs['kelamin'];
               ?>
 
               <form action="ubah.php" method="post">

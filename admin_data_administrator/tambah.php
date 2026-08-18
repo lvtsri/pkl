@@ -6,7 +6,15 @@ if (isset($_POST['btn_tambah_admin'])){
     $nama = trim(mysqli_real_escape_string($koneksi, $_POST['nama']));
     $peran = trim(mysqli_real_escape_string($koneksi, $_POST['peran']));
     $password = sha1($username);
-    $pin = '1234';
+    // $pin = '1234';
+
+    if ($peran == 'A') {
+        $pin = 654321;
+    } elseif ($peran == 'M') {
+        $pin = 123456;
+    } else {
+        $pin = 696969;
+    }
 
     $cek_user = mysqli_query($koneksi, "SELECT username FROM tb_pengguna WHERE username = '$username'") or die (mysqli_error($koneksi));
     $rv = mysqli_num_rows($cek_user);
@@ -28,7 +36,7 @@ if (isset($_POST['btn_tambah_admin'])){
             '$username',
             '$password',
             '$peran',
-            '$pin',
+            $pin,
             '$nama'
         )") or die(mysqli_error($koneksi));
 

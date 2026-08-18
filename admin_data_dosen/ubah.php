@@ -8,7 +8,7 @@ if (isset($_POST['btn_edit'])) {
     $email   = trim(mysqli_real_escape_string($koneksi, $_POST['email']));
     $kelamin = trim(mysqli_real_escape_string($koneksi, $_POST['kelamin']));
 
-    $query_edit = mysqli_query($koneksi, "UPDATE tb_dosen SET
+    $query_edit_dosen = mysqli_query($koneksi, "UPDATE tb_dosen SET
         nama = '$nama',
         kontak = '$kontak',
         email = '$email',
@@ -16,7 +16,10 @@ if (isset($_POST['btn_edit'])) {
         WHERE nik = '$nik'
     ") or die(mysqli_error($koneksi));
 
-    if ($query_edit) {
+    $query_edit_pengguna = mysqli_query($koneksi, "UPDATE tb_pengguna SET nama = '$nama' WHERE username = $nik") 
+    or die(mysqli_error($koneksi));
+
+    if ($query_edit_dosen && $query_edit_pengguna) {
         echo '
         <script>
             alert("Data Dosen Berhasil Diedit");

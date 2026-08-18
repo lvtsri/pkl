@@ -36,6 +36,7 @@
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
+          <?= $_SESSION['nama']; ?> - [<?= $_SESSION['peran']; ?>]
           <i class="far fa-user"></i>
         </a>
 
@@ -148,13 +149,13 @@
 
                                 </td>
                                 <td>
-                                  <a href="hapus.php?user=<?= $data['nik']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
-                                    <i class="fas fa-trash"></i>
-                                    Hapus
-                                  </a>
                                   <a href="edit.php?user=<?= $data['nik']; ?>" class="btn btn-warning btn-sm">
                                     <i class="fas fa-pen"></i>
                                     Edit
+                                  </a>
+                                  <a href="hapus.php?user=<?= $data['nik']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
+                                    <i class="fas fa-trash"></i>
+                                    Hapus
                                   </a>
                                 </td>
                             </tr>
@@ -232,7 +233,7 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-            <button type="submit" name="btn_tambah_admin" class="btn btn-primary">
+            <button type="submit" name="btn_tambah_dosen" class="btn btn-primary">
               <i class="fas fa-plus"></i>
               Tambah
             </button>

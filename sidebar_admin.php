@@ -18,7 +18,7 @@
         <li class="nav-item">
             <a href="../admin_data_administrator/" class="nav-link
                 <?= $aktif = ($hal == 'admin_admin') ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-user"></i>
+            <i class="nav-icon fas fa-users-cog"></i>
             <p>Data Pengguna</p>
             </a>
         </li>
@@ -26,7 +26,7 @@
         <li class="nav-item">
             <a href="../admin_data_dosen/" class="nav-link
                 <?= $aktif = ($hal == 'admin_dosen') ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-user"></i>
+            <i class="nav-icon fas fa-chalkboard-teacher"></i>
             <p>Data Dosen</p>
             </a>
         </li>
@@ -34,13 +34,37 @@
         <li class="nav-item">
             <a href="../admin_data_mhs/" class="nav-link
                 <?= $aktif = ($hal == 'admin_mhs') ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-user"></i>
+            <i class="nav-icon fas fa-user-graduate"></i>
             <p>Data Mahasiswa</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="../admin_makul/" class="nav-link
+                <?= $aktif = ($hal == 'admin_makul') ? 'active' : '' ?>">
+            <i class="nav-icon fas fa-book"></i>
+            <p>Mata Kuliah</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="../admin_periode/" class="nav-link
+                <?= $aktif = ($hal == 'admin_periode') ? 'active' : '' ?>">
+            <i class="nav-icon fas fa-calendar-alt"></i>
+            <p>Periode Akademik</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="../admin_password/" class="nav-link
+                <?= $aktif = ($hal == 'admin_pass') ? 'active' : '' ?>">
+            <i class="nav-icon fas fa-lock"></i>
+            <p>Ganti Password</p>
             </a>
         </li>
         
         <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="../logout.php" class="nav-link">
             <i class="nav-icon fas fa-sign-out-alt "></i>
             <p>Keluar</p>
             </a>
