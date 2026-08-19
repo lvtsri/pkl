@@ -9,7 +9,7 @@ require_once '../database/koneksi.php';
   <?php 
   include'../css.php';
 
-  $hal ='beranda_administrator';
+  $hal ='admin_data_makul';
   ?>
 </head>
 <!--
@@ -87,47 +87,55 @@ require_once '../database/koneksi.php';
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-       <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Edit Data Pengguna</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <?php 
-                $pengguna = @$_GET['user'];
-                $nama = @$_GET['nama'];
-                $peran = @$_GET['peran'];
-                ?>
-                <form action="ubah.php" method="post">
-                <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" name="username_disable" class="form-control" id="username" value="<?= $pengguna; ?>" placeholder="Masukan Username" disabled>
-                  <input type="text" name="username" class="form-control" id="username" value="<?= $pengguna; ?>" placeholder="Masukan Username" hidden>
-                </div>
-                <div class="form-group">
-                  <label for="name">Nama</label>
-                  <input type="text" name="name" class="form-control" id="name" value="<?= $nama; ?>" placeholder="Masukan Nama" required>
-                </div>
-                <div class="form-group">
-                  <label>Peran</label>
-                  <select class="form-control" name="peran" >
-                    <option value="">-- Pilih Peran --</option>
-                    <option value="A" <?= ($peran == 'A') ? 'selected': '' ;?>>Admin</option>
-                    <option value="D" <?= ($peran == 'D') ? 'selected': '' ;?>>Dosen</option>
-                    <option value="M" <?= ($peran == 'M') ? 'selected': '' ;?>>Mahasiswa</option>
-                  </select>
-                </div>
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Edit Data Mahasiswa</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+              <?php 
+              // Caraku
+              $kode_makul = @$_GET['kode'];
+              $query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul WHERE kode_makul = '$kode_makul'");
+              $data = mysqli_fetch_assoc($query_makul);
 
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="submit" name="btn_edit" class="btn btn-primary btn-block">Edit</button>
-            </div>
-            </form>
-                
-              </div>
+              if (!$data) {
+                  echo '<script>alert("Data tidak ditemukan!"); window.location.href="../admin_data_makul";</script>';
+                  exit;
+              }
+
+              $kode_makul = $data['kode_makul'];
+              $nama_makul = $data['nama_makul'];
+              $jml_sks = $data['jml_sks'];
+              $jml_cpmk = $data['jml_cpmk'];
+              ?>
+
+              <form action="ubah.php" method="post">
+                  <div class="form-group">
+                      <label for="kode_makul">kode_makul</label>
+                      <input type="text" name="kode_makul_disable" class="form-control" id="kode_makul" value="<?= $kode_makul; ?>" disabled>
+                      <input type="text" name="kode_makul" class="form-control" id="kode_makul" value="<?= $kode_makul; ?>" hidden>
+                  </div>
+                  <div class="form-group">
+                      <label for="nama_makul">Nama Matkul</label>
+                      <input type="text" name="nama_makul" class="form-control" id="nama_makul" value="<?= $nama_makul; ?>">
+                  </div>
+                  <div class="form-group">
+                      <label for="jml_sks">Jumlah SKS</label>
+                      <input type="text" name="jml_sks" class="form-control" id="jml_sks" value="<?= $jml_sks; ?>">
+                  </div>
+                  <div class="form-group">
+                      <label for="jml_cpmk">Email</label>
+                      <input type="jml_cpmk" name="jml_cpmk" class="form-control" id="jml_cpmk" value="<?= $jml_cpmk; ?>">
+                  </div>
+                  <div class="modal-footer">
+                      <button type="submit" name="btn_edit" class="btn btn-success btn-block">Simpan Perubahan</button>
+                  </div>
+              </form>
+          </div>
               <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+        </div>
+        <!-- /.card -->
       </div>
       <!-- /.container-fluid -->
     </div>
@@ -144,7 +152,7 @@ require_once '../database/koneksi.php';
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Tambah Data Pengguna</h4>
+              <h4 class="modal-title">Tambah Data Mahasiswa</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>

@@ -16,8 +16,8 @@
         </li>
 
         <li class="nav-item">
-            <a href="../mhs_password/" class="nav-link
-                <?= $aktif = ($hal == 'admin_pass') ? 'active' : '' ?>">
+            <a href="../mahasiswa_password/" class="nav-link
+                <?= $aktif = ($hal == 'mhs_pass') ? 'active' : '' ?>">
             <i class="nav-icon fas fa-lock"></i>
             <p>Ganti Password</p>
             </a>

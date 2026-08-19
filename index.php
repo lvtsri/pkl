@@ -113,7 +113,6 @@
             $query_pin = mysqli_query($koneksi, "SELECT * FROM tb_pengguna WHERE username = '$username_aktif' AND pin = '$input_pin'");
 
             if ($username_aktif && mysqli_num_rows($query_pin) > 0){
-              // PIN Valid! Ambil peran user
               $data = mysqli_fetch_assoc($query_pin);
               $peran = $data['peran'];
               $pin = $data['pin'];
@@ -128,7 +127,6 @@
               // Hapus session temporary
               unset($_SESSION['temp_username']);
 
-              // Redirect langsung berdasarkan peran
               echo '<script>';
               if ($peran == 'M') {
                   echo 'window.location = "home_mahasiswa/";';

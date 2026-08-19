@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php
   include '../css.php';
-  $hal = 'admin_admin';
+  $hal = 'admin_data_makul';
   ?>
 </head>
 <!--
@@ -64,6 +64,7 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        
         <div class="info">
           <a href="#" class="d-block">Sistem Manajemen PKL</a>
         </div>
@@ -92,7 +93,7 @@
       <div class="container-fluid">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Data Pengguna</h3>
+                <h3 class="card-title">Data Mata Kuliah</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -100,6 +101,10 @@
                   <i class="fas fa-plus"></i> 
                   Tambah Data
                 </button>
+                <a href="tambah.php" type="button" class="btn btn-success mb-2"> Tambah Data 2</a>
+                <a href="reset.php" type="button" class="btn btn-danger mb-2" onclick="return confirm('Anda yakin ingin mereset seluruh data makul? Tindakan ini tidak dapat dikembalikan')">
+                  <i class="fas fa-exclamation-triangle"></i> Reset Data
+                </a>
 
                 <?php
                   $pengguna = $_SESSION['username'];
@@ -108,48 +113,38 @@
                   <thead>
                   <tr class="text-center">
                     <th width="5%">No</th>
-                    <th>Username</th>
-                    <th>Nama Pengguna</th>
-                    <th>Peran</th>
+                    <th>Kode Mata Kuliah</th>
+                    <th>Nama Mata Kuliah</th>
+                    <th>Jumlah SKS</th>
+                    <th>Jumlah CPMK</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
                     <?php
-                    $panggil_data_user = mysqli_query($koneksi, "SELECT * FROM tb_pengguna")or die(mysqli_error($koneksi));
+                    $panggil_data_user = mysqli_query($koneksi, "SELECT * FROM tb_makul")or die(mysqli_error($koneksi));
 
                     $no = 1;
                     $rv = mysqli_num_rows($panggil_data_user);
                     if ($rv > 0){
                         while ($data = mysqli_fetch_array($panggil_data_user)){
-                            $user = $data['username'];
-                            $nama = $data['nama'];
-                            $peran = $data['peran'];
+                            $kode_makul = $data['kode_makul'];
+                            $nama_makul = $data['nama_makul'];
+                            $jml_sks = $data['jml_sks'];
+                            $jml_cpmk = $data['jml_cpmk'];
                             ?>
                             <tr class="text-center">
                                 <td><?= $no++ ?></td>
-                                <td><?= $user; ?></td>
-                                <td><?= $nama; ?></td>
+                                <td><?= $kode_makul; ?></td>
+                                <td><?= $nama_makul; ?></td>
+                                <td><?= $jml_sks; ?></td>
+                                <td><?= $jml_cpmk; ?></td>
                                 <td>
-                                  <?php
-                                  // $peran = $data['peran'];
-                                  if ($peran == 'M'){
-                                    echo 'Mahasiswa';
-                                  }elseif ($peran == 'D'){
-                                    echo 'Dosen';
-                                  } else {
-                                    echo 'Admin';
-                                  }
-                                  ;
-                                  ?>
-
-                                </td>
-                                <td>
-                                  <a href="edit.php?user=<?= $data['username']; ?>" class="btn btn-warning btn-sm">
+                                  <a href="edit.php?kode=<?= $data['kode_makul']; ?>" class="btn btn-warning btn-sm">
                                     <i class="fas fa-pen"></i>
                                     Edit
                                   </a>
-                                  <a href="hapus.php?user=<?= $data['username']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
+                                  <a href="hapus.php?kode=<?= $data['kode_makul']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
                                     <i class="fas fa-trash"></i>
                                     Hapus
                                   </a>
@@ -160,16 +155,10 @@
                     } else {
                         ?>
                         <tr>
-                            <td colspan="5">Data tidak ditemukan</td> 
+                            <td colspan="7">Data tidak ditemukan</td> 
                         </tr>
                         <?php
-                    }
-
-                    // $data = mysqli_fetch_array($panggil_data_user);
-
-                    // $user = $data['username'];
-                    // $pin = $data['pin'];
-                    // $peran = $data['peran'];
+                    }   
                     ?>
                     </tbody>
                   <tfoot>
@@ -197,7 +186,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Tambah Data</h4>
+          <h4 class="modal-title">Tambah Data Mahasiswa</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -205,8 +194,8 @@
         <form action="tambah.php" method="post">
           <div class="modal-body">
             <div class="form-group">
-              <label for="username">Username</label>
-              <input type="text" class="form-control" name="username" id="username" placeholder="Masukkan username" required>
+              <label for="username">NIM</label>
+              <input type="number" class="form-control" name="nim" id="nim" placeholder="Masukkan NIM" required>
             </div>
 
             <div class="form-group">
@@ -215,18 +204,27 @@
             </div>
 
             <div class="form-group">
-              <label>Peran</label>
-              <select class="form-control" name="peran" required>
-                <option value="">-- Pilih Peran --</option>
-                <option value="A">Admin</option>
-                <option value="D">Dosen</option>
-                <option value="M">Mahasiswa</option>
+              <label for="nama">Kontak</label>
+              <input type="number" class="form-control" name="kontak" id="kontak" placeholder="Masukkan kontak" required>
+            </div>
+
+            <div class="form-group">
+              <label for="nama">Email</label>
+              <input type="email" class="form-control" name="email" id="email" placeholder="Masukkan email" required>
+            </div>
+
+            <div class="form-group">
+              <label>Jenis Kelamin</label>
+              <select class="form-control" name="kelamin" required>
+                <option value="">-- Pilih Jenis Kelamin --</option>
+                <option value="P">Perempuan</option>
+                <option value="L">Laki-laki</option>
               </select>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-            <button type="submit" name="btn_tambah_admin" class="btn btn-primary">
+            <button type="submit" name="btn_tambah_mhs" class="btn btn-primary">
               <i class="fas fa-plus"></i>
               Tambah
             </button>

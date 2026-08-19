@@ -9,7 +9,7 @@
   <?php
   include '../css.php';
   // session_start();
-  $hal = 'admin_pass';
+  $hal = 'mhs_pass';
   ?>
 </head>
 <!--
@@ -72,7 +72,7 @@
       </div>
       <!-- Sidebar Menu -->
         <?php
-        include '../sidebar_admin.php';
+        include '../sidebar_mahasiswa.php';
         ?>
       <!-- /.sidebar-menu -->
     </div>
@@ -133,13 +133,13 @@
                       echo 
                       '<script>
                         alert("Password berhasil diubah!");
-                        window.location.href = "../admin_password";
+                        window.location.href = "../mahasiswa_password";
                       </script>';
                     } else {
                       echo 
                       '<script>
                         alert("Password lama atau PIN salah");
-                        window.location.href = "../admin_password";
+                        window.location.href = "../mahasiswa_password";
                       </script>';
                     }
                   }

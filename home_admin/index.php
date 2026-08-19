@@ -1,3 +1,13 @@
+<?php
+require_once '../database/koneksi.php';
+$authority = @$_SESSION['peran'];
+if($authority != 'A'){
+  echo '<script>
+    window.location.href = "../logout.php";
+    alert("Anda bukan admin!!! Akan segera di logout-kan");
+  </script>';
+} else {
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +15,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php
   include '../css.php';
-  session_start();
   $hal = 'beranda_admin';
   ?>
 </head>
@@ -84,6 +93,7 @@
         <?php
          $pengguna = $_SESSION['username'];
         ?>
+        <p>Ini halaman admin</p>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -118,3 +128,6 @@ include '../script.php';
 ?>
 </body>
 </html>
+<?php
+}
+?>

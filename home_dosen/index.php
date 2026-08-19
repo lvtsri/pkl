@@ -1,5 +1,15 @@
 <?php
 require_once '../database/koneksi.php';
+$authority = @$_SESSION['peran'];
+if($authority != 'D'){
+  echo '<script>
+    window.location.href = "../logout.php";
+    alert("Anda bukan dosen... *logout-ing you");
+  </script>';
+} else {
+?>
+<?php
+require_once '../database/koneksi.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +18,6 @@ require_once '../database/koneksi.php';
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php
   include '../css.php';
-//   session_start();
   $hal = 'beranda_dosen';
   ?>
 </head>
@@ -87,6 +96,7 @@ require_once '../database/koneksi.php';
         <?php
          $pengguna = $_SESSION['username'];
         ?>
+        <p>ini halaman dosen</p>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -121,3 +131,6 @@ include '../script.php';
 ?>
 </body>
 </html>
+<?php
+}
+?>

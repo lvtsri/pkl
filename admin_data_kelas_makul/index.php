@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php
   include '../css.php';
-  $hal = 'admin_dosen';
+  $hal = 'admin_data_kelas_makul';
   ?>
 </head>
 <!--
@@ -83,104 +83,56 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        
+        <!-- isi idk -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
 
-    <!-- Main content -->
+  <!-- Main content -->
     <div class="content">
-      <div class="container-fluid">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Data Dosen</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-tambah-user">
-                  <i class="fas fa-plus"></i> 
-                  Tambah Data
-                </button>
-                <a href="reset.php" type="button" class="btn btn-danger mb-2" onclick="return confirm('Anda yakin ingin mereset seluruh data dosen? Tindakan ini tidak dapat dikembalikan')">
-                  <i class="fas fa-exclamation-triangle"></i> Reset Data
-                </a>
-
-                <?php
-                  $pengguna = $_SESSION['username'];
-                ?>
-                <table id="example1" class="table table-bordered table-striped">
-                  <thead>
-                  <tr class="text-center">
-                    <th width="5%">No</th>
-                    <th>NIK</th>
-                    <th>Nama</th>
-                    <th>Kontak</th>
-                    <th>Email</th>
-                    <th>Kelamin</th>
-                    <th>Aksi</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    $panggil_data_user = mysqli_query($koneksi, "SELECT * FROM tb_dosen")or die(mysqli_error($koneksi));
-
-                    $no = 1;
-                    $rv = mysqli_num_rows($panggil_data_user);
-                    if ($rv > 0){
-                        while ($data = mysqli_fetch_array($panggil_data_user)){
-                            $nik = $data['nik'];
-                            $nama = $data['nama'];
-                            $kontak = $data['kontak'];
-                            $email = $data['email'];
-                            $kelamin = $data['kelamin'];
-                            ?>
-                            <tr class="text-center">
-                                <td><?= $no++ ?></td>
-                                <td><?= $nik; ?></td>
-                                <td><?= $nama; ?></td>
-                                <td><?= $kontak; ?></td>
-                                <td><?= $email; ?></td>
-                                <td>
-                                  <?php
-                                  if ($kelamin == 'P'){
-                                    echo 'Perempuan';
-                                  } else {
-                                    echo 'Laki-laki';
-                                  }
-                                  ;
-                                  ?>
-
-                                </td>
-                                <td>
-                                  <a href="edit.php?user=<?= $data['nik']; ?>" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-pen"></i>
-                                    Edit
-                                  </a>
-                                  <a href="hapus.php?user=<?= $data['nik']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
-                                    <i class="fas fa-trash"></i>
-                                    Hapus
-                                  </a>
-                                </td>
-                            </tr>
-                            <?php
-                        }
-                    } else {
+        <div class="container-fluid">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="col-3">
+                        <?php 
+                        $panggil_periode_akademik = mysqli_query($koneksi, "SELECT * FROM tb_akademik" )or die(mysqli_error($koneksi));
                         ?>
-                        <tr>
-                            <td colspan="7">Data tidak ditemukan</td> 
-                        </tr>
-                        <?php
-                    }   
-                    ?>
-                    </tbody>
-                  <tfoot>
-
-                  </tfoot>
-                </table>
-              </div>
-              <!-- /.card-body -->
+                        <div class="form-group">                    
+                            <select class="form-control" name="semester" id="">
+                                <?php 
+                                while ($data_periode = mysqli_fetch_array($panggil_periode_akademik)){
+                                    $kode_akd = $data_periode['kode_akd'];
+                                    $semester = $data_periode['semester'];
+                                    $tahun = $data_periode['tahun'];?>
+                                <option value="<?= $kode_akd; ?>"><?= $tahun?> - <?= ($semester == 'gl')? 'Ganjil' : 'Genap'?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" name="btn_cari" class="btn btn-primary"><i class="fas fa-search"></i> Tampilkan Data</button>
+                    </div>
+                </div>
+            </form>
+            <?php 
+            if (isset($_POST['btn_cari'])){
+            ?>
+            <div class="row">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Data Kelas Mata Kuliah</h3>
+                    </div>
+                    <div class="card-body">
+                        Data Kelas Mata Kuliah Berdasarkan Periode
+                    </div>
+                </div>
             </div>
-      </div>
+            <?php 
+            }
+            ?>
+        </div>
       <!-- /.container-fluid -->
     </div>
     <!-- /.content -->
@@ -198,7 +150,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Tambah Data Dosen</h4>
+          <h4 class="modal-title">Tambah Data Mahasiswa</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -206,8 +158,8 @@
         <form action="tambah.php" method="post">
           <div class="modal-body">
             <div class="form-group">
-              <label for="username">NIK</label>
-              <input type="number" class="form-control" name="nik" id="nik" placeholder="Masukkan NIK" required>
+              <label for="username">NIM</label>
+              <input type="number" class="form-control" name="nim" id="nim" placeholder="Masukkan NIM" required>
             </div>
 
             <div class="form-group">
@@ -236,7 +188,7 @@
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-            <button type="submit" name="btn_tambah_dosen" class="btn btn-primary">
+            <button type="submit" name="btn_tambah_mhs" class="btn btn-primary">
               <i class="fas fa-plus"></i>
               Tambah
             </button>

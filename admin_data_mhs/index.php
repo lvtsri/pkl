@@ -35,9 +35,8 @@
     <ul class="navbar-nav ml-auto">
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <p><?= $_SESSION['nama']; ?> - [<?= $_SESSION['peran']; ?>]</p>
         <a class="nav-link" data-toggle="dropdown" href="#">
-          
+          <?= $_SESSION['nama']; ?> - [<?= $_SESSION['peran']; ?>]
           <i class="far fa-user"></i>
         </a>
 
@@ -102,6 +101,9 @@
                   <i class="fas fa-plus"></i> 
                   Tambah Data
                 </button>
+                <a href="reset.php" type="button" class="btn btn-danger mb-2" onclick="return confirm('Anda yakin mereset seluruh data mahasiswa? Tindakan ini tidak dapat dikembalikan')">
+                  <i class="fas fa-exclamation-triangle"></i> Reset Data
+                </a>
 
                 <?php
                   $pengguna = $_SESSION['username'];

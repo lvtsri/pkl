@@ -1,3 +1,14 @@
+<?php
+require_once '../database/koneksi.php';
+$authority = @$_SESSION['peran'];
+if($authority != 'M'){
+  echo '<script>
+    window.location.href = "../logout.php";
+    alert("Yang bukan mahasiswa gaboleh masuk. Bye👋 *logout-ing you");
+  </script>';
+} else {
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +16,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php
   include '../css.php';
-  session_start();
   $hal = 'beranda_mhs';
   ?>
 </head>
@@ -84,6 +94,10 @@
         <?php
          $pengguna = $_SESSION['username'];
         ?>
+        <p>ini halaman mhs</p>
+        <?php
+        echo $authority;
+        ?>
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
@@ -112,9 +126,12 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
-<?php
-include '../script.php';
-?>
+  <!-- REQUIRED SCRIPTS -->
+  <?php
+  include '../script.php';
+  ?>
 </body>
 </html>
+<?php
+}
+?>
