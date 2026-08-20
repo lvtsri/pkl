@@ -89,13 +89,14 @@ require_once '../database/koneksi.php';
       <div class="container-fluid">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Edit Data Mahasiswa</h3>
+            <h3 class="card-title">Edit Data Matkul</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
               <?php 
               // Caraku
               $kode_makul = @$_GET['kode'];
+
               $query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul WHERE kode_makul = '$kode_makul'");
               $data = mysqli_fetch_assoc($query_makul);
 

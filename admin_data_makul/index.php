@@ -105,6 +105,10 @@
                 <a href="reset.php" type="button" class="btn btn-danger mb-2" onclick="return confirm('Anda yakin ingin mereset seluruh data makul? Tindakan ini tidak dapat dikembalikan')">
                   <i class="fas fa-exclamation-triangle"></i> Reset Data
                 </a>
+                <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-impor">
+                  <i class="fas fa-file-excel"></i> 
+                  Impor Data
+                </button>
 
                 <?php
                   $pengguna = $_SESSION['username'];
@@ -186,7 +190,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Tambah Data Mahasiswa</h4>
+          <h4 class="modal-title">Tambah Data Mata Kuliah</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -227,6 +231,40 @@
             <button type="submit" name="btn_tambah_mhs" class="btn btn-primary">
               <i class="fas fa-plus"></i>
               Tambah
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- MODAL IMPOR -->
+  <div class="modal fade" id="modal-impor">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Impor Data Mata Kuliah</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="impor.php" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="file">Upload File</label>
+              <input type="file" class="form-control" name="file_excel" required>
+            </div>
+            <div class="form-group">
+              <label for="template">Download Template Excel</label><br>
+              <a href="template/template_data_makul_kosongan.xls" class="btn btn-success" download><i class="fas fa-download"></i> Download</a>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="submit" name="btn_impor" class="btn btn-success">
+              <!-- <i class="fas fa-plus"></i> -->
+              Impor Data
             </button>
           </div>
         </form>

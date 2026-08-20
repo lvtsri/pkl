@@ -42,7 +42,7 @@
         <li class="nav-item">
             <a href="../admin_data_makul/" class="nav-link
                 <?= $aktif = ($hal == 'admin_data_makul') ? 'active' : '' ?>">
-            <i class="nav-icon fas fa-book"></i>
+            <i class="nav-icon fas fa-book-open"></i>
             <p>Mata Kuliah</p>
             </a>
         </li>
@@ -56,8 +56,8 @@
         </li>
 
         <li class="nav-item">
-            <a href="../admin_akademik/" class="nav-link
-                <?= $aktif = ($hal == 'admin_akademik') ? 'active' : '' ?>">
+            <a href="../admin_data_akademik/" class="nav-link
+                <?= $aktif = ($hal == 'admin_data_akademik') ? 'active' : '' ?>">
             <i class="nav-icon fas fa-calendar"></i>
             <p>Periode Akademik</p>
             </a>

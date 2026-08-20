@@ -104,7 +104,7 @@
                                     $kode_akd = $data_periode['kode_akd'];
                                     $semester = $data_periode['semester'];
                                     $tahun = $data_periode['tahun'];?>
-                                <option value="<?= $kode_akd; ?>"><?= $tahun?> - <?= ($semester == 'gl')? 'Ganjil' : 'Genap'?></option>
+                                <option value="<?= $kode_akd; ?>"><?= $tahun?> - <?= ($semester == 'GL')? 'Ganjil' : 'Genap'?></option>
                                 <?php
                                 }
                                 ?>
