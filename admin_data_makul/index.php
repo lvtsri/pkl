@@ -109,6 +109,10 @@
                   <i class="fas fa-file-excel"></i> 
                   Impor Data
                 </button>
+                <a href="pdf.php" type="button" class="btn btn-danger mb-2" target="_blank">
+                  <i class="fas fa-file-pdf"></i> 
+                  Ekspor Data
+                </a>
 
                 <?php
                   $pengguna = $_SESSION['username'];
@@ -125,48 +129,56 @@
                   </tr>
                   </thead>
                   <tbody>
-                    <?php
+                  <?php
                     $panggil_data_user = mysqli_query($koneksi, "SELECT * FROM tb_makul")or die(mysqli_error($koneksi));
-
                     $no = 1;
                     $rv = mysqli_num_rows($panggil_data_user);
                     if ($rv > 0){
-                        while ($data = mysqli_fetch_array($panggil_data_user)){
-                            $kode_makul = $data['kode_makul'];
-                            $nama_makul = $data['nama_makul'];
-                            $jml_sks = $data['jml_sks'];
-                            $jml_cpmk = $data['jml_cpmk'];
-                            ?>
-                            <tr class="text-center">
-                                <td><?= $no++ ?></td>
-                                <td><?= $kode_makul; ?></td>
-                                <td><?= $nama_makul; ?></td>
-                                <td><?= $jml_sks; ?></td>
-                                <td><?= $jml_cpmk; ?></td>
-                                <td>
-                                  <a href="edit.php?kode=<?= $data['kode_makul']; ?>" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-pen"></i>
-                                    Edit
-                                  </a>
-                                  <a href="hapus.php?kode=<?= $data['kode_makul']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
-                                    <i class="fas fa-trash"></i>
-                                    Hapus
-                                  </a>
-                                </td>
-                            </tr>
-                            <?php
-                        }
+                      while ($data = mysqli_fetch_array($panggil_data_user)){
+                        $kode_makul = $data['kode_makul'];
+                        $nama_makul = $data['nama_makul'];
+                        $jml_sks = $data['jml_sks'];
+                        $jml_cpmk = $data['jml_cpmk'];
+                  ?>
+                        <tr class="text-center">
+                            <td><?= $no++ ?></td>
+                            <td><?= $kode_makul; ?></td>
+                            <td><?= $nama_makul; ?></td>
+                            <td><?= $jml_sks; ?></td>
+                            <td><?= $jml_cpmk; ?></td>
+                            <td>
+                              <a href="edit.php?kode=<?= $data['kode_makul']; ?>" class="btn btn-warning btn-sm">
+                                <i class="fas fa-pen"></i>
+                                <!-- Edit -->
+                                </a>
+                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-edit" 
+                                  data-kode="<?= $data['kode_makul']; ?>" 
+                                  data-nama="<?= $data['nama_makul'] ?>"
+                                  data-sks="<?= $data['jml_sks']; ?>"
+                                  data-cpmk="<?= $data['jml_cpmk']; ?>"
+                                >
+                                  <i class="fas fa-pen"></i>
+                                  <!-- Edit 2 -->
+                                </button>
+                              <a href="hapus.php?kode=<?= $data['kode_makul']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
+                                <i class="fas fa-trash"></i>
+                                <!-- Hapus -->
+                              </a>
+                            </td>
+                        </tr>
+                      <?php
+                      }
                     } else {
-                        ?>
+                      ?>
                         <tr>
                             <td colspan="7">Data tidak ditemukan</td> 
                         </tr>
-                        <?php
+                      <?php
                     }   
-                    ?>
-                    </tbody>
+                  ?>
+                  </tbody>
                   <tfoot>
-
+                    <!-- kode -->
                   </tfoot>
                 </table>
               </div>
@@ -198,32 +210,23 @@
         <form action="tambah.php" method="post">
           <div class="modal-body">
             <div class="form-group">
-              <label for="username">NIM</label>
-              <input type="number" class="form-control" name="nim" id="nim" placeholder="Masukkan NIM" required>
+              <label for="username">Kode Mata Kuliah</label>
+              <input type="text" class="form-control" name="kode_makul" id="kode_makul" placeholder="Masukkan kode makul" required>
             </div>
 
             <div class="form-group">
-              <label for="nama">Nama</label>
-              <input type="text" class="form-control" name="nama" id="nama" placeholder="Masukkan nama" required>
+              <label for="nama">Nama Mata Kuliah</label>
+              <input type="text" class="form-control" name="nama_makul" id="nama_makul" placeholder="Masukkan nama makul" required>
             </div>
 
             <div class="form-group">
-              <label for="nama">Kontak</label>
-              <input type="number" class="form-control" name="kontak" id="kontak" placeholder="Masukkan kontak" required>
+              <label for="nama">Jumlah SKS</label>
+              <input type="number" class="form-control" name="jml_sks" id="jml_sks" placeholder="Masukkan jumlah SKS" required>
             </div>
 
             <div class="form-group">
-              <label for="nama">Email</label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="Masukkan email" required>
-            </div>
-
-            <div class="form-group">
-              <label>Jenis Kelamin</label>
-              <select class="form-control" name="kelamin" required>
-                <option value="">-- Pilih Jenis Kelamin --</option>
-                <option value="P">Perempuan</option>
-                <option value="L">Laki-laki</option>
-              </select>
+              <label for="nama">Jumlah CPMK</label>
+              <input type="number" class="form-control" name="jml_cpmk" id="jml_cpmk" placeholder="Masukkan jumlah CPMK" required>
             </div>
           </div>
           <div class="modal-footer justify-content-between">
@@ -231,6 +234,51 @@
             <button type="submit" name="btn_tambah_mhs" class="btn btn-primary">
               <i class="fas fa-plus"></i>
               Tambah
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- MODAL EDIT -->
+  <div class="modal fade" id="modal-edit">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Data Mata Kuliah</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="ubah.php" method="post">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="username">Kode Mata Kuliah</label>
+              <input type="text" class="form-control" name="kode_makul" id="kode_makul" required readonly>
+            </div>
+
+            <div class="form-group">
+              <label for="nama">Nama Mata Kuliah</label>
+              <input type="text" class="form-control" name="nama_makul" id="nama_makul" required>
+            </div>
+
+            <div class="form-group">
+              <label for="nama">Jumlah SKS</label>
+              <input type="number" class="form-control" name="jml_sks" id="jml_sks" required>
+            </div>
+
+            <div class="form-group">
+              <label for="nama">Jumlah CPMK</label>
+              <input type="number" class="form-control" name="jml_cpmk" id="jml_cpmk" required>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="submit" name="btn_edit" class="btn btn-warning">
+              <i class="fas fa-pen"></i>
+              Edit
             </button>
           </div>
         </form>
@@ -286,5 +334,18 @@
 <?php
 include '../script.php';
 ?>
+<script>
+  $('#modal-edit').on('show.bs.modal', function(e){
+    var kode = $(e.relatedTarget).data('kode');
+    var nama = $(e.relatedTarget).data('nama');
+    var sks = $(e.relatedTarget).data('sks');
+    var cpmk = $(e.relatedTarget).data('cpmk');
+
+    $(e.currentTarget).find('input[name="kode_makul"]').val(kode);
+    $(e.currentTarget).find('input[name="nama_makul"]').val(nama);
+    $(e.currentTarget).find('input[name="jml_sks"]').val(sks);
+    $(e.currentTarget).find('input[name="jml_cpmk"]').val(cpmk);
+  });
+</script>
 </body>
 </html>

@@ -49,7 +49,7 @@
 
         <li class="nav-item">
             <a href="../admin_data_kelas_makul/" class="nav-link
-                <?= $aktif = ($hal == 'admin_kelas_makul') ? 'active' : '' ?>">
+                <?= $aktif = ($hal == 'admin_data_kelas_makul') ? 'active' : '' ?>">
             <i class="nav-icon fas fa-book"></i>
             <p>Kelas Mata Kuliah</p>
             </a>

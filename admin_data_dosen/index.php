@@ -108,6 +108,10 @@
                   <i class="fas fa-file-excel"></i> 
                   Impor Data
                 </button>
+                <a href="pdf.php" type="button" class="btn btn-danger mb-2" target="_blank">
+                  <i class="fas fa-file-pdf"></i> 
+                  Ekspor Data
+                </a>
 
                 <?php
                   $pengguna = $_SESSION['username'];
@@ -158,11 +162,21 @@
                                 <td>
                                   <a href="edit.php?user=<?= $data['nik']; ?>" class="btn btn-warning btn-sm">
                                     <i class="fas fa-pen"></i>
-                                    Edit
+                                    <!-- Edit -->
                                   </a>
+                                  <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-edit" 
+                                    data-nik="<?= $data['nik']; ?>" 
+                                    data-nama="<?= $data['nama'] ?>"
+                                    data-kontak="<?= $data['kontak']; ?>"
+                                    data-email="<?= $data['email']; ?>"
+                                    data-kelamin="<?= $data['kelamin']; ?>"
+                                  >
+                                    <i class="fas fa-pen"></i>
+                                    <!-- Edit 2 -->
+                                  </button>
                                   <a href="hapus.php?user=<?= $data['nik']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
                                     <i class="fas fa-trash"></i>
-                                    Hapus
+                                    <!-- Hapus -->
                                   </a>
                                 </td>
                             </tr>
@@ -251,6 +265,61 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+
+  <!-- MODAL EDIT -->
+  <div class="modal fade" id="modal-edit">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Data Mahasiswa</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="ubah.php" method="post">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="nik">NIM</label>
+              <input type="number" class="form-control" name="nik" id="nik" required readonly>
+            </div>
+
+            <div class="form-group">
+              <label for="nama">Nama Dosen</label>
+              <input type="text" class="form-control" name="nama" id="nama" required>
+            </div>
+
+            <div class="form-group">
+              <label for="kontak">Kontak</label>
+              <input type="number" class="form-control" name="kontak" id="kontak" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" id="email" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Jenis Kelamin</label>
+              <select class="form-control" name="kelamin" required>
+                <option value="">-- Pilih Jenis Kelamin --</option>
+                <option value="P">Perempuan</option>
+                <option value="L">Laki-laki</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="submit" name="btn_edit" class="btn btn-warning">
+              <i class="fas fa-pen"></i>
+              Edit
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
   
   <!-- MODAL IMPOR -->
   <div class="modal fade" id="modal-impor">
@@ -299,5 +368,20 @@
 <?php
 include '../script.php';
 ?>
+<script>
+  $('#modal-edit').on('show.bs.modal', function(e){
+    var nik = $(e.relatedTarget).data('nik');
+    var nama = $(e.relatedTarget).data('nama');
+    var kontak = $(e.relatedTarget).data('kontak');
+    var email = $(e.relatedTarget).data('email');
+    var kelamin = $(e.relatedTarget).data('kelamin');
+
+    $(e.currentTarget).find('input[name="nik"]').val(nik);
+    $(e.currentTarget).find('input[name="nama"]').val(nama);
+    $(e.currentTarget).find('input[name="kontak"]').val(kontak);
+    $(e.currentTarget).find('input[name="email"]').val(email);
+    $(e.currentTarget).find('select[name="kelamin"]').val(kelamin);
+  });
+</script>
 </body>
 </html>

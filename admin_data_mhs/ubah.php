@@ -3,7 +3,7 @@ require_once '../database/koneksi.php';
 
 if (isset($_POST['btn_edit'])) {
     $nim     = trim(mysqli_real_escape_string($koneksi, $_POST['nim']));
-    $nama    = trim(mysqli_real_escape_string($koneksi, $_POST['name']));
+    $nama    = trim(mysqli_real_escape_string($koneksi, $_POST['nama']));
     $kontak  = trim(mysqli_real_escape_string($koneksi, $_POST['kontak']));
     $email   = trim(mysqli_real_escape_string($koneksi, $_POST['email']));
     $kelamin = trim(mysqli_real_escape_string($koneksi, $_POST['kelamin']));
