@@ -40,6 +40,14 @@
         </li>
 
         <li class="nav-item">
+            <a href="../admin_jurusan/" class="nav-link
+                <?= $aktif = ($hal == 'admin_jurusan') ? 'active' : '' ?>">
+            <i class="nav-icon fas fa-user-graduate"></i>
+            <p>Jurusan</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="../admin_data_makul/" class="nav-link
                 <?= $aktif = ($hal == 'admin_data_makul') ? 'active' : '' ?>">
             <i class="nav-icon fas fa-book-open"></i>

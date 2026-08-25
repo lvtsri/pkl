@@ -9,7 +9,7 @@ require_once '../database/koneksi.php';
   <?php 
   include'../css.php';
 
-  $hal ='edit_mhs';
+  $hal ='admin_mhs';
   ?>
 </head>
 <!--
@@ -146,6 +146,10 @@ require_once '../database/koneksi.php';
                           <option value="P" <?= ($kelamin == 'P') ? 'selected': ''; ?>>Perempuan</option>
                           <option value="L" <?= ($kelamin == 'L') ? 'selected': ''; ?>>Laki-laki</option>
                       </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="img">Foto</label>
+                    <input type="file" class="form-control" name="img" id="img">
                   </div>
                   <div class="modal-footer">
                       <button type="submit" name="btn_edit" class="btn btn-primary btn-block">Simpan Perubahan</button>

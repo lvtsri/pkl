@@ -101,7 +101,8 @@ require_once '../database/koneksi.php';
               $data = mysqli_fetch_assoc($query_makul);
 
               if (!$data) {
-                  echo '<script>alert("Data tidak ditemukan!"); window.location.href="../admin_data_makul";</script>';
+                  echo '<script>alert("Data tidak ditemukan!"); 
+                  window.location.href="../admin_data_makul";</script>';
                   exit;
               }
 

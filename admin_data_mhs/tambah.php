@@ -8,6 +8,17 @@ if (isset($_POST['btn_tambah_mhs'])){
     $email = trim(mysqli_real_escape_string($koneksi, $_POST['email']));
     $kelamin = trim(mysqli_real_escape_string($koneksi, $_POST['kelamin']));
 
+    $alamat_tujuan = "";
+    if (!empty($_FILES['file_foto']['name'])) {
+            $file = $_FILES['file_foto']['name'];
+            $ekstensi = explode('.', $file);
+            $nama_file = 'foto-mhs'.round(microtime(true)).'.'.end($ekstensi);
+
+            $alamat_sumber = $_FILES['file_foto']['tmp_name'];
+            $alamat_tujuan = '../asset_web/img/'.$nama_file;            
+            move_uploaded_file($alamat_sumber, $alamat_tujuan);
+        }
+
     $cek_user = mysqli_query($koneksi, "SELECT nim FROM tb_mahasiswa WHERE nim = '$nim'") or die (mysqli_error($koneksi));
     $rv = mysqli_num_rows($cek_user);
 
@@ -19,9 +30,9 @@ if (isset($_POST['btn_tambah_mhs'])){
         </script>';
     } else {
         $query_simpan = mysqli_query($koneksi, "INSERT INTO tb_mahasiswa (
-            nim, nama, kontak, email, kelamin
+            nim, nama, kontak, email, kelamin, img
         ) VALUES (
-            '$nim','$nama','$kontak','$email','$kelamin'
+            '$nim','$nama','$kontak','$email','$kelamin', '$alamat_tujuan'
         )") or die(mysqli_error($koneksi));
 
         // Query buat nambah juga ke tb pengguna

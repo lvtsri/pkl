@@ -114,6 +114,10 @@
                     <div class="col-3">
                         <button type="submit" name="btn_cari" class="btn btn-primary"><i class="fas fa-search"></i> Tampilkan Data</button>
                     </div>
+                    <div class="col-3"></div>
+                    <div class="col-3">
+                      <button type="submit" name="btn_cari" class="btn btn-warning"><i class="fas fa-plus"></i> Tambah Data</button>
+                    </div>
                 </div>
             </form>
             <?php 
@@ -132,6 +136,7 @@
             <?php 
             }
             ?>
+            <!-- --- -->
         </div>
       <!-- /.container-fluid -->
     </div>

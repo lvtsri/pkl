@@ -15,7 +15,7 @@ if($authority != 'A'){
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php
   include '../css.php';
-  $hal = 'admin_data_akademik';
+  $hal = 'admin_jurusan';
   ?>
 </head>
 <!--
@@ -90,78 +90,52 @@ if($authority != 'A'){
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
-    <div class="content">
-      <div class="container-fluid">
         <div class="row">
             <div class="col-lg-6">
-                <div class="card card-success">
+                <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Tambah Periode Akademmik</h3>
+                        <h3 class="card-title">Tambah Data Jurusan</h3>
                     </div>
                     <div class="card-body">
                         <form action="" method="post">
                             <div class="form-group">
-                                <label for="password_lama">Kode Akademik</label>
-                                <input type="text" name="kode_makul" class="form-control" placeholder="Masukkan kode makul" required>
+                                <label for="password_lama">Kode Jurusan</label>
+                                <input type="text" name="kode_jurusan" class="form-control" placeholder="Masukkan kode jurusan" required>
                             </div>
                             <div class="form-group">
-                                <label>Semester</label>
-                                <select class="form-control" name="semester" required>
-                                    <option value="">-- Pilih Semester --</option>
-                                    <option value="GL">Ganjil</option>
-                                    <option value="GN">Genap</option>
-                                </select>
+                                <label for="password_baru">Nama Jurusan</label>
+                                <input type="text" name="nama_jurusan" class="form-control" placeholder="Masukkan nama jurusan" required>
                             </div>
                             <div class="form-group">
-                                <label for="pin2fa">Tahun</label>
-                                <input type="number" name="jml_sks" class="form-control" placeholder="Masukkan tahun" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Aktif</label>
-                                <select class="form-control" name="semester" required>
-                                    <option value="">-- Pilih Aktifasi --</option>
-                                    <option value="1">Aktif</option>
-                                    <option value="0">Non Aktif</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-success btn-block" name="btn_tambah"><i class="fas fa-edit"></i> Tambah </button>
+                                <button type="submit" class="btn btn-primary btn-block" name="btn_tambah"><i class="fas fa-edit"></i> Tambah </button>
                             </div>
                         </form>
                         <?php
 
                         if (isset($_POST['btn_tambah'])){
-                            $kode_akd = trim(mysqli_real_escape_string($koneksi, $_POST['kode_akd']));
-                            $semester = trim(mysqli_real_escape_string($koneksi, $_POST['semester']));
-                            $tahun = trim(mysqli_real_escape_string($koneksi, $_POST['tahun']));
-                            $is_active = trim(mysqli_real_escape_string($koneksi, $_POST['is_active']));
+                            $kode_jurusan = trim(mysqli_real_escape_string($koneksi, $_POST['kode_jurusan']));
+                            $nama_jurusan = trim(mysqli_real_escape_string($koneksi, $_POST['nama_jurusan']));
 
-                            $cek_akd = mysqli_query($koneksi, "SELECT kode_akd FROM tb_akademi WHERE kode_akd = '$kode_akd'") or die (mysqli_error($koneksi));
-                            $rv = mysqli_num_rows($cek_akd);
+                            $cek_jurusan = mysqli_query($koneksi, "SELECT kode_jurusan FROM tb_jurusan WHERE kode_jurusan = '$kode_jurusan'") or die (mysqli_error($koneksi));
+                            $rv = mysqli_num_rows($cek_jurusan);
 
                             if ($rv == 1){
                                 echo '
                                 <script>
-                                    alert("Kode Akademi sudah Terdaftar");
-                                    window.location.href="../admin_data_akademik"
+                                    alert("Kode Jurusan Sudah Terdaftar");
+                                    window.location.href="../admin_jurusan"
                                 </script>';
                             } else {
-                                $query_simpan = mysqli_query($koneksi, "INSERT INTO tb_makul (
-                                    kode_akd, semester, tahun, is_active
+                                $query_simpan = mysqli_query($koneksi, "INSERT INTO tb_jurusan (
+                                    kode_jurusan, nama_jurusan
                                 ) VALUES (
-                                    '$kode_akd','$semester','$tahun','$is_avtive'
+                                    '$kode_jurusan','$nama_jurusan'
                                 )") or die(mysqli_error($koneksi));
 
                                 echo '
                                 <script> 
-                                    alert("Data periode akademi berhasil disimpan");
-                                    window.location.href="../admin_data_akademi"    
+                                    alert("Data jurusan berhasil disimpan");
+                                    window.location.href="../admin_jurusan"    
                                 </script>';
                             }
                         }
@@ -171,6 +145,14 @@ if($authority != 'A'){
                 </div>
             </div>
         </div>
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+
       </div>
       <!-- /.container-fluid -->
     </div>

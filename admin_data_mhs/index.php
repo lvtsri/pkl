@@ -125,6 +125,7 @@
                     <th>Kontak</th>
                     <th>Email</th>
                     <th>Jenis Kelamin</th>
+                    <th>Foto</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
@@ -141,6 +142,7 @@
                             $kontak = $data['kontak'];
                             $email = $data['email'];
                             $kelamin = $data['kelamin'];
+                            $img = $data['img'];
                             ?>
                             <tr class="text-center">
                                 <td><?= $no++ ?></td>
@@ -155,14 +157,49 @@
                                   } else {
                                     echo 'Laki-laki';
                                   }
-                                  ;
                                   ?>
-
                                 </td>
                                 <td>
+                                  <!-- Cara 1:-->
+                                  <!-- <?php
+                                    if ($kelamin == 'P') {
+                                      echo '<button type="button" class="btn" data-toggle="modal" data-target="#modal-ubah-foto" data-nim="<?= $nim; ?>">
+                                        <img src="../asset_web/img/mhs-woman.jpg" width="60" alt="Perempuan">
+                                      </button>';
+                                    } else {
+                                      echo '<button type="button" class="btn" data-toggle="modal" data-target="#modal-ubah-foto" data-nim="<?= $nim; ?>">
+                                        <img src="../asset_web/img/mhs-man.jpg" width="60" alt="Laki-laki">
+                                      </button>';
+                                    }
+                                  ?> -->
+
+                                  <!-- Cara 2:  -->
+                                  <!-- <button type="button" class="btn" data-toggle="modal" data-target="#modal-ubah-foto" data-nim="<?= $nim; ?>">
+                                    <?= ($kelamin == 'P') ? '<img src="../asset_web/img/mhs-woman.jpg" width="60">' :
+                                    '<img src="../asset_web/img/mhs-man.jpg" width="60">' ?>
+                                  </button> -->
+
+                                  <!-- Cara 3:-->
+                                  <button type="button" class="btn" data-toggle="modal" data-target="#modal-ubah-foto" data-nim="<?= $nim; ?>">
+                                    <?php
+                                      if ($kelamin == 'P') {
+                                    ?>
+                                      <img src="<?= (!empty($img))?$img : '../asset_web/img/mhs-woman.jpg'?>" style="width: 60px; height: 60px; object-fit: cover;">
+                                    <?php
+                                      } else {
+                                    ?>
+                                      <img src="<?= (!empty($img))?$img : '../asset_web/img/mhs-man.jpg'?>" style="width: 60px; height: 60px; object-fit: cover;">
+                                    <?php
+                                      }
+                                    ?>
+                                  </button>
+                                </td>
+                                <td>
+                                  <a href="profil.php?user=<?= $data['nim']; ?>" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                  </a>
                                   <a href="edit.php?user=<?= $data['nim']; ?>" class="btn btn-warning btn-sm">
                                     <i class="fas fa-pen"></i>
-                                    <!-- Edit -->
                                   </a>
                                   <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-edit" 
                                     data-nim="<?= $data['nim']; ?>" 
@@ -172,11 +209,9 @@
                                     data-kelamin="<?= $data['kelamin']; ?>"
                                   >
                                     <i class="fas fa-pen"></i>
-                                    <!-- Edit 2 -->
                                   </button>
                                   <a href="hapus.php?user=<?= $data['nim']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
                                     <i class="fas fa-trash"></i>
-                                    <!-- Hapus -->
                                   </a>
                                 </td>
                             </tr>
@@ -221,7 +256,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="tambah.php" method="post">
+        <form action="tambah.php" method="post" enctype="multipart/form-data">
           <div class="modal-body">
             <div class="form-group">
               <label for="username">NIM</label>
@@ -251,7 +286,13 @@
                 <option value="L">Laki-laki</option>
               </select>
             </div>
+
+            <div class="form-group">
+              <label for="img">Foto</label>
+              <input type="file" class="form-control" name="file_foto">
+            </div>
           </div>
+
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
             <button type="submit" name="btn_tambah_mhs" class="btn btn-primary">
@@ -306,6 +347,11 @@
                 <option value="L">Laki-laki</option>
               </select>
             </div>
+
+            <div class="form-group">
+              <label for="img">Foto</label>
+              <input type="file" class="form-control" name="img" id="img">
+            </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -357,6 +403,42 @@
   </div>
   <!-- /.modal -->
 
+  <!-- MODAL UBAH FOTO MHS -->
+  <div class="modal fade" id="modal-ubah-foto">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Ubah Foto Mahasiswa</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="ubah_foto.php" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="form-group">
+              NIM : 
+              <input type="text" name="nim" >
+            </div>
+            <div class="form-group">
+              <label for="file">Upload File</label>
+              <input type="file" class="form-control" name="file_foto" required>
+            </div>
+          </div>
+          <!-- btn -->
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="submit" name="btn_ubah_foto" class="btn btn-success">
+              Ubah Foto
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
   <!-- Main Footer -->
   <?php
   include '../footer.php';
@@ -381,6 +463,12 @@ include '../script.php';
     $(e.currentTarget).find('input[name="kontak"]').val(kontak);
     $(e.currentTarget).find('input[name="email"]').val(email);
     $(e.currentTarget).find('select[name="kelamin"]').val(kelamin);
+  });
+
+  $('#modal-ubah-foto').on('show.bs.modal', function(e){
+    var nim = $(e.relatedTarget).data('nim');
+
+    $(e.currentTarget).find('input[name="nim"]').val(nim);
   });
 </script>
 </body>

@@ -141,6 +141,7 @@
                             $kontak = $data['kontak'];
                             $email = $data['email'];
                             $kelamin = $data['kelamin'];
+                            $img = $data['img'];
                             ?>
                             <tr class="text-center">
                                 <td><?= $no++ ?></td>
@@ -157,9 +158,26 @@
                                   }
                                   ;
                                   ?>
-
                                 </td>
                                 <td>
+                                  <button type="button" class="btn" data-toggle="modal" data-target="#modal-ubah-foto" data-nik="<?= $nik; ?>">
+                                    <?php
+                                      if ($kelamin == 'P') {
+                                    ?>
+                                      <img src="<?= (!empty($img))?$img : '../asset_web/img/dosen-woman.jpg'?>" style="width: 60px; height: 60px; object-fit: cover;">
+                                    <?php
+                                      } else {
+                                    ?>
+                                      <img src="<?= (!empty($img))?$img : '../asset_web/img/dosen-man.jpg'?>" style="width: 60px; height: 60px; object-fit: cover;">
+                                    <?php
+                                      }
+                                    ?>
+                                  </button>
+                                </td>
+                                <td>
+                                  <a href="profil.php?user=<?= $data['nik']; ?>" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                  </a>
                                   <a href="edit.php?user=<?= $data['nik']; ?>" class="btn btn-warning btn-sm">
                                     <i class="fas fa-pen"></i>
                                     <!-- Edit -->
@@ -251,6 +269,11 @@
                 <option value="L">Laki-laki</option>
               </select>
             </div>
+
+            <div class="form-group">
+              <label for="img">Foto</label>
+              <input type="file" class="form-control" name="img" id="img">
+            </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -306,6 +329,11 @@
                 <option value="L">Laki-laki</option>
               </select>
             </div>
+
+            <div class="form-group">
+              <label for="img">Foto</label>
+              <input type="file" class="form-control" name="img" id="img">
+            </div>
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -356,6 +384,42 @@
     <!-- /.modal-dialog -->
   </div>
   <!-- /.modal -->
+  
+  <!-- MODAL UBAH FOTO -->
+  <div class="modal fade" id="modal-ubah-foto">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Ubah Foto Dosen</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="ubah_foto.php" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="form-group">
+              NIK : 
+              <input type="text" name="nik" readonly>
+            </div>
+            <div class="form-group">
+              <label for="file">Upload File</label>
+              <input type="file" class="form-control" name="file_foto" required>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="submit" name="btn_ubah_foto" class="btn btn-success">
+              <!-- <i class="fas fa-plus"></i> -->
+              Ubah Foto
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 
   <!-- Main Footer -->
   <?php
@@ -381,6 +445,12 @@ include '../script.php';
     $(e.currentTarget).find('input[name="kontak"]').val(kontak);
     $(e.currentTarget).find('input[name="email"]').val(email);
     $(e.currentTarget).find('select[name="kelamin"]').val(kelamin);
+  });
+
+  $('#modal-ubah-foto').on('show.bs.modal', function(e){
+    var nik = $(e.relatedTarget).data('nik');
+
+    $(e.currentTarget).find('input[name="nik"]').val(nik);
   });
 </script>
 </body>
