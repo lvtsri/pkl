@@ -2,10 +2,10 @@
 require_once '../database/koneksi.php';
 
 if (isset($_POST['btn_edit'])) {
-    $nik     = trim(mysqli_real_escape_string($koneksi, $_POST['nik']));
-    $nama    = trim(mysqli_real_escape_string($koneksi, $_POST['nama']));
-    $kontak  = trim(mysqli_real_escape_string($koneksi, $_POST['kontak']));
-    $email   = trim(mysqli_real_escape_string($koneksi, $_POST['email']));
+    $nik = trim(mysqli_real_escape_string($koneksi, $_POST['nik']));
+    $nama = trim(mysqli_real_escape_string($koneksi, $_POST['nama']));
+    $kontak = trim(mysqli_real_escape_string($koneksi, $_POST['kontak']));
+    $email = trim(mysqli_real_escape_string($koneksi, $_POST['email']));
     $kelamin = trim(mysqli_real_escape_string($koneksi, $_POST['kelamin']));
 
     $query_edit_dosen = mysqli_query($koneksi, "UPDATE tb_dosen SET

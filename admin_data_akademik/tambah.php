@@ -108,7 +108,7 @@ if($authority != 'A'){
                         <form action="" method="post">
                             <div class="form-group">
                                 <label for="password_lama">Kode Akademik</label>
-                                <input type="text" name="kode_makul" class="form-control" placeholder="Masukkan kode makul" required>
+                                <input type="text" name="kode_akd" class="form-control" placeholder="Masukkan kode makul" required>
                             </div>
                             <div class="form-group">
                                 <label>Semester</label>
@@ -119,12 +119,12 @@ if($authority != 'A'){
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="pin2fa">Tahun</label>
-                                <input type="number" name="jml_sks" class="form-control" placeholder="Masukkan tahun" required>
+                                <label for="tahun">Tahun</label>
+                                <input type="number" name="tahun" class="form-control" placeholder="Masukkan tahun" required>
                             </div>
                             <div class="form-group">
                                 <label>Aktif</label>
-                                <select class="form-control" name="semester" required>
+                                <select class="form-control" name="is_active" required>
                                     <option value="">-- Pilih Aktifasi --</option>
                                     <option value="1">Aktif</option>
                                     <option value="0">Non Aktif</option>
@@ -142,7 +142,7 @@ if($authority != 'A'){
                             $tahun = trim(mysqli_real_escape_string($koneksi, $_POST['tahun']));
                             $is_active = trim(mysqli_real_escape_string($koneksi, $_POST['is_active']));
 
-                            $cek_akd = mysqli_query($koneksi, "SELECT kode_akd FROM tb_akademi WHERE kode_akd = '$kode_akd'") or die (mysqli_error($koneksi));
+                            $cek_akd = mysqli_query($koneksi, "SELECT kode_akd FROM tb_akademik WHERE kode_akd = '$kode_akd'") or die (mysqli_error($koneksi));
                             $rv = mysqli_num_rows($cek_akd);
 
                             if ($rv == 1){
@@ -152,16 +152,16 @@ if($authority != 'A'){
                                     window.location.href="../admin_data_akademik"
                                 </script>';
                             } else {
-                                $query_simpan = mysqli_query($koneksi, "INSERT INTO tb_makul (
+                                $query_simpan = mysqli_query($koneksi, "INSERT INTO tb_akademik (
                                     kode_akd, semester, tahun, is_active
                                 ) VALUES (
-                                    '$kode_akd','$semester','$tahun','$is_avtive'
+                                    '$kode_akd','$semester','$tahun','$is_active'
                                 )") or die(mysqli_error($koneksi));
 
                                 echo '
                                 <script> 
                                     alert("Data periode akademi berhasil disimpan");
-                                    window.location.href="../admin_data_akademi"    
+                                    window.location.href="../admin_data_akademik"    
                                 </script>';
                             }
                         }

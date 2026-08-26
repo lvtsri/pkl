@@ -87,56 +87,133 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+  
   <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
             <form action="" method="post">
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-2">
                         <?php 
                         $panggil_periode_akademik = mysqli_query($koneksi, "SELECT * FROM tb_akademik" )or die(mysqli_error($koneksi));
+
                         ?>
                         <div class="form-group">                    
                             <select class="form-control" name="semester" id="">
+                              <option value="">-- Pilih periode --</option>
                                 <?php 
                                 while ($data_periode = mysqli_fetch_array($panggil_periode_akademik)){
                                     $kode_akd = $data_periode['kode_akd'];
                                     $semester = $data_periode['semester'];
                                     $tahun = $data_periode['tahun'];?>
-                                <option value="<?= $kode_akd; ?>"><?= $tahun?> - <?= ($semester == 'GL')? 'Ganjil' : 'Genap'?></option>
+                                <option value="<?= $kode_akd; ?>">
+                                  <?= $tahun?> - <?= ($semester == 'GL')? 'Ganjil' : 'Genap'?>
+                                </option>
                                 <?php
                                 }
                                 ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <button type="submit" name="btn_cari" class="btn btn-primary"><i class="fas fa-search"></i> Tampilkan Data</button>
-                    </div>
-                    <div class="col-3"></div>
-                    <div class="col-3">
-                      <button type="submit" name="btn_cari" class="btn btn-warning"><i class="fas fa-plus"></i> Tambah Data</button>
+                    <div class="col-6">
+                      <button type="submit" name="btn_cari" class="btn btn-warning mb-2"><i class="fas fa-search"></i> Tampilkan Data</button>
+                      <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-tambah-data">
+                        <i class="fas fa-plus"></i> 
+                        Tambah Data
+                      </button>
                     </div>
                 </div>
             </form>
             <?php 
             if (isset($_POST['btn_cari'])){
+              $filter = trim(mysqli_real_escape_string($koneksi, $_POST['semester']));
             ?>
             <div class="row">
+              <div class="col-md-12">
                 <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Data Kelas Mata Kuliah</h3>
+                        <h3 class="card-title">Data Kelas Mata Kuliah untuk Periode Akademik: <?= $filter; ?></h3>
                     </div>
                     <div class="card-body">
-                        Data Kelas Mata Kuliah Berdasarkan Periode
+                <?php
+                  $pengguna = $_SESSION['username'];
+                ?>
+                  <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                    <tr class="text-center">
+                      <th width="5%">No</th>
+                      <!-- <th>Kode kls</th> -->
+                      <th>Kode Akademik</th>
+                      <th>Kode Mata Kuliah</th>
+                      <th>Kode Jurusan</th>
+                      <th>NIK</th>
+                      <th>Nama Kelas</th>
+                      <th>Aksi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      $panggil_kelas = mysqli_query($koneksi, "SELECT * FROM tb_kelas_makul WHERE kode_akd = '$filter'")or die(mysqli_error($koneksi));
+
+                      $no = 1;
+                      $rv = mysqli_num_rows($panggil_kelas);
+                      if ($rv > 0){
+                          while ($data = mysqli_fetch_array($panggil_kelas)){
+                              $kode_kelas = $data['kode_kelas'];
+                              $kode_akd = $data['kode_akd'];
+                              $kode_makul = $data['kode_makul'];
+                              $kode_jurusan = $data['kode_jurusan'];
+                              $nik = $data['nik'];
+                              $nama_kelas = $data['nama_kelas'];
+                              ?>
+                              <tr class="text-center">
+                                  <td><?= $no++ ?></td>
+                                  <!-- <td><?= $kode_kelas; ?></td> -->
+                                  <td><?= $kode_akd; ?></td>
+                                  <td><?= $kode_makul; ?></td>
+                                  <td><?= $kode_jurusan; ?></td>
+                                  <td><?= $nik; ?></td>
+                                  <td><?= $nama_kelas; ?></td>
+                                  <td>
+                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit"
+                                      data-kode="<?= $kode_kelas ?>"
+                                      data-akademik="<?= $kode_akd ?>"
+                                      data-makul="<?= $kode_makul ?>"
+                                      data-jurusan="<?= $kode_jurusan ?>"
+                                      data-nik="<?= $nik ?>"
+                                      data-kelas="<?= $nama_kelas ?>"
+                                      >
+                                      <i class="fas fa-pen"></i>
+                                      Edit
+                                    </button>
+                                    <a href="hapus.php?data=<?= $data['kode_kelas']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
+                                      <i class="fas fa-trash"></i>
+                                      Hapus
+                                    </a>
+                                  </td>
+                              </tr>
+                              <?php
+                          }
+                      } else {
+                          ?>
+                          <tr>
+                              <td colspan="7">Data tidak ditemukan</td> 
+                          </tr>
+                          <?php
+                      }   
+                      ?>
+                      </tbody>
+                    <tfoot>
+                      <!--  -->
+                    </tfoot>
+                  </table>
                     </div>
                 </div>
+              </div>
             </div>
             <?php 
             }
             ?>
-            <!-- --- -->
         </div>
       <!-- /.container-fluid -->
     </div>
@@ -151,7 +228,7 @@
   <!-- /.control-sidebar -->
 
   <!-- MODAL TAMBAH -->
-  <div class="modal fade" id="modal-tambah-user">
+  <div class="modal fade" id="modal-tambah">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -206,6 +283,206 @@
   </div>
   <!-- /.modal -->
 
+  <!-- MODAL TAMBAH DATA-->
+  <div class="modal fade" id="modal-tambah-data">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Tambah Data Kelas Mata Kuliah</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="tambah.php" method="post">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Kode Akademik</label>
+              <select class="form-control" name="kode_akd" required>
+                <option value="">-- Pilih Kode Akademik --</option>
+                  <?php 
+                    $query_akademik = mysqli_query($koneksi, "SELECT * FROM tb_akademik");
+                    while($data_akademik = mysqli_fetch_array($query_akademik)){
+                      $kode_akd = $data_akademik['kode_akd'];
+                      $semester = $data_akademik['semester'];
+                      $tahun = $data_akademik['tahun'];
+                    ?>
+
+                    <option value="<?= $kode_akd; ?>">
+                      <?= $tahun ?> - <?= ($semester == 'GL')? 'Ganjil' : 'Genap' ?>
+                    </option>
+                  ?>
+                  <?php
+                    }
+                  ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Kode Mata Kuliahk</label>
+              <select class="form-control" name="kode_makul" required>
+                <option value="">-- Pilih Kode Mata Kuliah --</option>
+                  <?php 
+                    $query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul");
+                    while($data_makul = mysqli_fetch_array($query_makul)){
+                  ?>
+                  <option value="<?= $data_makul['kode_makul'] ?>">
+                    <?= $data_makul['kode_makul'] ?> - <?= $data_makul['nama_makul'] ?>
+                  </option>
+                  <?php
+                  }
+                  ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Kode Jurusan</label>
+              <select class="form-control" name="kode_jurusan" required>
+                <option value="">-- Pilih Kode Jurusan --</option>
+                  <?php 
+                    $query_jurusan = mysqli_query($koneksi, "SELECT * FROM tb_jurusan");
+                    while($data_jurusan = mysqli_fetch_array($query_jurusan)): 
+                  ?>
+                  <option value="<?= $data_jurusan['kode_jurusan'] ?>">
+                    <?= $data_jurusan['kode_jurusan'] ?> - <?= $data_jurusan['nama_jurusan'] ?>
+                  </option>
+                  <?php endwhile; ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>NIK Dosen</label>
+              <select class="form-control" name="nik" required>
+                <option value="">-- Pilih NIK --</option>
+                  <?php 
+                    $query_dosen = mysqli_query($koneksi, "SELECT * FROM tb_dosen");
+                    while($data_dosen = mysqli_fetch_array($query_dosen)): 
+                  ?>
+                  <option value="<?= $data_dosen['nik'] ?>">
+                    <?= $data_dosen['nik'] ?> - <?= $data_dosen['nama'] ?>
+                  </option>
+                  <?php endwhile; ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="nama">Nama Kelas</label>
+              <input type="text" class="form-control" name="nama_kelas" placeholder="Masukkan Nama Kelas" required>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="submit" name="btn_tambah_kelas" class="btn btn-primary">
+              <i class="fas fa-plus"></i>
+              Tambah
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <!-- MODAL EDIT DATA-->
+  <div class="modal fade" id="modal-edit">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Data Kelas Mata Kuliah</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="ubah.php" method="post">
+          <div class="modal-body">
+            <div class="form-group">
+              <input type="text" name="kode_kelas" hidden required>
+              <label>Kode Akademik</label>
+              <select class="form-control" name="kode_akd" required>
+                <option value="">-- Pilih Kode Akademik --</option>
+                  <?php 
+                    $query_akademik = mysqli_query($koneksi, "SELECT * FROM tb_akademik");
+                    while($data_akademik = mysqli_fetch_array($query_akademik)){
+                      $kode_akd = $data_akademik['kode_akd'];
+                      $semester = $data_akademik['semester'];
+                      $tahun = $data_akademik['tahun'];?>  
+
+                    <option value="<?= $kode_akd; ?>">
+                      <?= $tahun ?> - <?= ($semester == 'GL')? 'Ganjil' : 'Genap' ?>
+                    </option>
+                  ?>
+                  <?php
+                    }
+                  ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Kode Mata Kuliah</label>
+              <select class="form-control" name="kode_makul" required>
+                <option value="">-- Pilih Kode Mata Kuliah --</option>
+                  <?php 
+                    $query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul");
+                    while($data_makul = mysqli_fetch_array($query_makul)){
+                  ?>
+                  <option value="<?= $data_makul['kode_makul'] ?>">
+                    <?= $data_makul['kode_makul'] ?> - <?= $data_makul['nama_makul'] ?>
+                  </option>
+                  <?php
+                  }
+                  ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Kode Jurusan</label>
+              <select class="form-control" name="kode_jurusan" required>
+                <option value="">-- Pilih Kode Jurusan --</option>
+                  <?php 
+                    $query_jurusan = mysqli_query($koneksi, "SELECT * FROM tb_jurusan");
+                    while($data_jurusan = mysqli_fetch_array($query_jurusan)): 
+                  ?>
+                  <option value="<?= $data_jurusan['kode_jurusan'] ?>">
+                    <?= $data_jurusan['kode_jurusan'] ?> - <?= $data_jurusan['nama_jurusan'] ?>
+                  </option>
+                  <?php endwhile; ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>NIK Dosen</label>
+              <select class="form-control" name="nik" required>
+                <option value="">-- Pilih NIK --</option>
+                  <?php 
+                    $query_dosen = mysqli_query($koneksi, "SELECT * FROM tb_dosen");
+                    while($data_dosen = mysqli_fetch_array($query_dosen)): 
+                  ?>
+                  <option value="<?= $data_dosen['nik'] ?>">
+                    <?= $data_dosen['nik'] ?> - <?= $data_dosen['nama'] ?>
+                  </option>
+                  <?php endwhile; ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="nama">Nama Kelas</label>
+              <input type="text" class="form-control" name="nama_kelas"required>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="submit" name="btn_edit_kelas" class="btn btn-primary">
+              <i class="fas fa-plus"></i>
+              Tambah
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
   <!-- Main Footer -->
   <?php
   include '../footer.php';
@@ -217,5 +494,23 @@
 <?php
 include '../script.php';
 ?>
+
+<script>
+  $('#modal-edit').on('show.bs.modal', function(e){
+    var kode_kelas = $(e.relatedTarget).data('kode');
+    var kode_akd = $(e.relatedTarget).data('akademik');
+    var kode_makul = $(e.relatedTarget).data('makul');
+    var kode_jurusan = $(e.relatedTarget).data('jurusan');
+    var nik = $(e.relatedTarget).data('nik');
+    var nama_kelas = $(e.relatedTarget).data('kelas');
+
+    $(e.currentTarget).find('input[name="kode_kelas"]').val(kode_kelas);
+    $(e.currentTarget).find('select[name="kode_akd"]').val(kode_akd);
+    $(e.currentTarget).find('select[name="kode_makul"]').val(kode_makul);
+    $(e.currentTarget).find('select[name="kode_jurusan"]').val(kode_jurusan);
+    $(e.currentTarget).find('select[name="nik"]').val(nik);
+    $(e.currentTarget).find('input[name="nama_kelas"]').val(nama_kelas);
+  });
+</script>
 </body>
 </html>
