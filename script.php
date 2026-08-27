@@ -29,7 +29,7 @@
 <script src="../asset_web/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <!-- AdminLTE for demo purposes -->
-<script src="../asset_web/dist/js/demo.js"></script>
+<!-- <script src="../asset_web/dist/js/demo.js"></script> -->
 <!-- Page specific script -->
 <script>
     $(function () {

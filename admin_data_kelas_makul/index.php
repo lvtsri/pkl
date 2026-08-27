@@ -142,19 +142,27 @@
                     <thead>
                     <tr class="text-center">
                       <th width="5%">No</th>
-                      <!-- <th>Kode kls</th> -->
-                      <th>Kode Akademik</th>
-                      <th>Kode Mata Kuliah</th>
-                      <th>Kode Jurusan</th>
-                      <th>NIK</th>
                       <th>Nama Kelas</th>
+                      <th>Periode Akademik</th>
+                      <th>Mata Kuliah</th>
+                      <th>Jurusan</th>
+                      <th>Dosen</th>
                       <th>Aksi</th>
                     </tr>
                     </thead>
                     <tbody>
                       <?php
                       $panggil_kelas = mysqli_query($koneksi, "SELECT * FROM tb_kelas_makul WHERE kode_akd = '$filter'")or die(mysqli_error($koneksi));
+                      $query_akd = mysqli_query($koneksi, "SELECT * FROM tb_akademik WHERE kode_akd = '$kode_akd'")or die(mysqli_error($koneksi));
+                      $query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul")or die(mysqli_error($koneksi));
+                      $query_jurusan = mysqli_query($koneksi, "SELECT * FROM tb_jurusan")or die(mysqli_error($koneksi));
+                      $query_dosen = mysqli_query($koneksi, "SELECT * FROM tb_dosen")or die(mysqli_error($koneksi));
 
+                      // $data_akd = mysqli_fetch_assoc($query_akd);
+                      // $data_makul = mysqli_fetch_assoc($query_makul);
+                      // $data_jurusan = mysqli_fetch_assoc($query_jurusan);
+                      // $data_dosen = mysqli_fetch_assoc($query_dosen);
+            
                       $no = 1;
                       $rv = mysqli_num_rows($panggil_kelas);
                       if ($rv > 0){
@@ -165,15 +173,26 @@
                               $kode_jurusan = $data['kode_jurusan'];
                               $nik = $data['nik'];
                               $nama_kelas = $data['nama_kelas'];
+
+                              $query_akd = mysqli_query($koneksi, "SELECT * FROM tb_akademik WHERE kode_akd = '$kode_akd'");
+                              $data_akd = mysqli_fetch_assoc($query_akd);
+
+                              $query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul WHERE kode_makul = '$kode_makul'");
+                              $data_makul = mysqli_fetch_assoc($query_makul);
+
+                              $query_jurusan = mysqli_query($koneksi, "SELECT * FROM tb_jurusan WHERE kode_jurusan = '$kode_jurusan'");
+                              $data_jurusan = mysqli_fetch_assoc($query_jurusan);
+
+                              $query_dosen = mysqli_query($koneksi, "SELECT * FROM tb_dosen WHERE nik = '$nik'");
+                              $data_dosen = mysqli_fetch_assoc($query_dosen);
                               ?>
                               <tr class="text-center">
                                   <td><?= $no++ ?></td>
-                                  <!-- <td><?= $kode_kelas; ?></td> -->
-                                  <td><?= $kode_akd; ?></td>
-                                  <td><?= $kode_makul; ?></td>
-                                  <td><?= $kode_jurusan; ?></td>
-                                  <td><?= $nik; ?></td>
                                   <td><?= $nama_kelas; ?></td>
+                                  <td><?= $kode_akd; ?> - <?= $data_akd['semester'] == 'GN' ? 'Genap' : 'Ganjil'; ?></td>
+                                  <td><?= $kode_makul; ?> - <?= $data_makul['nama_makul']; ?></td>
+                                  <td><?= $kode_jurusan; ?> - <?= $data_jurusan['nama_jurusan']; ?></td>
+                                  <td><?= $nik; ?> - <?= $data_dosen['nama']; ?></td>
                                   <td>
                                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit"
                                       data-kode="<?= $kode_kelas ?>"
