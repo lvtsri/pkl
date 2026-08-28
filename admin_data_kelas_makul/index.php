@@ -188,12 +188,16 @@
                               ?>
                               <tr class="text-center">
                                   <td><?= $no++ ?></td>
-                                  <td><?= $nama_kelas; ?></td>
+                                  <td><?= $kode_kelas ?> - <?= $nama_kelas; ?></td>
                                   <td><?= $kode_akd; ?> - <?= $data_akd['semester'] == 'GN' ? 'Genap' : 'Ganjil'; ?></td>
                                   <td><?= $kode_makul; ?> - <?= $data_makul['nama_makul']; ?></td>
                                   <td><?= $kode_jurusan; ?> - <?= $data_jurusan['nama_jurusan']; ?></td>
                                   <td><?= $nik; ?> - <?= $data_dosen['nama']; ?></td>
                                   <td>
+                                    <a href="../admin_detail_kelas_makul/index.php?data=<?= $kode_kelas; ?>" class="btn btn-primary btn-sm">
+                                      <i class="fas fa-eye"></i>
+                                    </a>
+
                                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit"
                                       data-kode="<?= $kode_kelas ?>"
                                       data-akademik="<?= $kode_akd ?>"
@@ -203,11 +207,9 @@
                                       data-kelas="<?= $nama_kelas ?>"
                                       >
                                       <i class="fas fa-pen"></i>
-                                      Edit
                                     </button>
                                     <a href="hapus.php?data=<?= $data['kode_kelas']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
                                       <i class="fas fa-trash"></i>
-                                      Hapus
                                     </a>
                                   </td>
                               </tr>

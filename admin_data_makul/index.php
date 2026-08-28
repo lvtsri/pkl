@@ -101,7 +101,7 @@
                   <i class="fas fa-plus"></i> 
                   Tambah Data
                 </button>
-                <a href="tambah.php" type="button" class="btn btn-success mb-2"> Tambah Data 2</a>
+                <a href="tambah.php" type="button" class="btn btn-warning mb-2"> Tambah Data 2</a>
                 <a href="reset.php" type="button" class="btn btn-danger mb-2" onclick="return confirm('Anda yakin ingin mereset seluruh data makul? Tindakan ini tidak dapat dikembalikan')">
                   <i class="fas fa-exclamation-triangle"></i> Reset Data
                 </a>
@@ -111,6 +111,10 @@
                 </button>
                 <a href="pdf.php" type="button" class="btn btn-danger mb-2" target="_blank">
                   <i class="fas fa-file-pdf"></i> 
+                  Ekspor Data
+                </a>
+                <a href="excel.php" type="button" class="btn btn-success mb-2" target="_blank">
+                  <i class="fas fa-file-excel"></i> 
                   Ekspor Data
                 </a>
 
