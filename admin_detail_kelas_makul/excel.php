@@ -7,19 +7,25 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 ob_start();
 
-$nama_file = "Data-Makul-" . date('Y-m-d');
-$query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul")or die(mysqli_error($koneksi));
+$nama_file = "Detail-Makul-" . date('Y-m-d');
+
+$kode_kelas = isset($_GET['data']) ? $_GET['data'] : '';
+$query_kelas_mk = mysqli_query($koneksi, "SELECT dkm.*, m.nama, km.nama_kelas 
+    FROM tb_detail_kls_mk dkm
+    JOIN tb_mahasiswa m ON dkm.nim = m.nim
+    JOIN tb_kelas_makul km ON dkm.kode_kelas = km.kode_kelas
+    WHERE dkm.kode_kelas = '$kode_kelas';
+")or die(mysqli_error($koneksi));
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
-$sheet->setTitle('Data Makul');
+$sheet->setTitle('Data Detail Makul');
 
 // Set header cells
 $sheet->setCellValue('A1', 'No');
-$sheet->setCellValue('B1', 'Kode Makul');
-$sheet->setCellValue('C1', 'Nama Makul');
-$sheet->setCellValue('D1', 'Jumlah SKS');
-$sheet->setCellValue('E1', 'Jumlah CPMK');
+$sheet->setCellValue('B1', 'NIM');
+$sheet->setCellValue('C1', 'Nama');
+$sheet->setCellValue('D1', 'Kelas');
 
 $styleArray = [
     'borders' => [
@@ -29,26 +35,24 @@ $styleArray = [
         ],
     ],
 ];
-$sheet->getStyle('A1:E1')->applyFromArray($styleArray);
-$sheet->getStyle('A1:E1')->getFont()->setBold(true);
+$sheet->getStyle('A1:D1')->applyFromArray($styleArray);
+$sheet->getStyle('A1:D1')->getFont()->setBold(true);
 
-foreach (array('B', 'C', 'D', 'E') as $columnID) {
+foreach (array('B', 'C', 'D') as $columnID) {
     $sheet->getColumnDimension($columnID)->setAutoSize(true);   //otomatis lebar
 }
 
 $no = 1;
 $rowNumber = 2;
-while ($data = mysqli_fetch_assoc($query_makul)) {
-    $kode = $data['kode_makul'];
-    $nama = $data['nama_makul'];
-    $sks = $data['jml_sks'];
-    $cpmk = $data['jml_cpmk'];
+while ($data = mysqli_fetch_assoc($query_kelas_mk)) {
+    $nim = $data['nim'];
+    $nama = $data['nama'];
+    $nama_kelas = $data['nama_kelas'];
 
     $sheet->setCellValue("A" . $rowNumber, $no);
-    $sheet->setCellValue("B" . $rowNumber, $kode);
+    $sheet->setCellValue("B" . $rowNumber, $nim);
     $sheet->setCellValue("C" . $rowNumber, $nama);
-    $sheet->setCellValue("D" . $rowNumber, $sks);
-    $sheet->setCellValue("E" . $rowNumber, $cpmk);
+    $sheet->setCellValue("D" . $rowNumber, $nama_kelas);
     $rowNumber++;
     $no++;
 }

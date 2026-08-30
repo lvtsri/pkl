@@ -7,19 +7,20 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 ob_start();
 
-$nama_file = "Data-Makul-" . date('Y-m-d');
-$query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul")or die(mysqli_error($koneksi));
+$nama_file = "Data-Mahasiswa-" . date('Y-m-d');
+$query_mhs = mysqli_query($koneksi, "SELECT * FROM tb_mahasiswa")or die(mysqli_error($koneksi));
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
-$sheet->setTitle('Data Makul');
+$sheet->setTitle('Data Mahasiswa');
 
 // Set header cells
 $sheet->setCellValue('A1', 'No');
-$sheet->setCellValue('B1', 'Kode Makul');
-$sheet->setCellValue('C1', 'Nama Makul');
-$sheet->setCellValue('D1', 'Jumlah SKS');
-$sheet->setCellValue('E1', 'Jumlah CPMK');
+$sheet->setCellValue('B1', 'NIM');
+$sheet->setCellValue('C1', 'Nama Mahasiswa');
+$sheet->setCellValue('D1', 'Kontak');
+$sheet->setCellValue('E1', 'Email');
+$sheet->setCellValue('F1', 'Jenis Kelamin');
 
 $styleArray = [
     'borders' => [
@@ -29,26 +30,28 @@ $styleArray = [
         ],
     ],
 ];
-$sheet->getStyle('A1:E1')->applyFromArray($styleArray);
-$sheet->getStyle('A1:E1')->getFont()->setBold(true);
+$sheet->getStyle('A1:F1')->applyFromArray($styleArray);
+$sheet->getStyle('A1:F1')->getFont()->setBold(true);
 
-foreach (array('B', 'C', 'D', 'E') as $columnID) {
+foreach (array('B', 'C', 'D', 'E', 'F') as $columnID) {
     $sheet->getColumnDimension($columnID)->setAutoSize(true);   //otomatis lebar
 }
 
 $no = 1;
 $rowNumber = 2;
-while ($data = mysqli_fetch_assoc($query_makul)) {
-    $kode = $data['kode_makul'];
-    $nama = $data['nama_makul'];
-    $sks = $data['jml_sks'];
-    $cpmk = $data['jml_cpmk'];
+while ($data = mysqli_fetch_assoc($query_mhs)) {
+    $nim = $data['nim'];
+    $nama = $data['nama'];
+    $jk = $data['kelamin'];
+    $kontak = $data['kontak'];
+    $email = $data['email'];
 
     $sheet->setCellValue("A" . $rowNumber, $no);
-    $sheet->setCellValue("B" . $rowNumber, $kode);
+    $sheet->setCellValue("B" . $rowNumber, $nim);
     $sheet->setCellValue("C" . $rowNumber, $nama);
-    $sheet->setCellValue("D" . $rowNumber, $sks);
-    $sheet->setCellValue("E" . $rowNumber, $cpmk);
+    $sheet->setCellValue("D" . $rowNumber, $kontak);
+    $sheet->setCellValue("E" . $rowNumber, $email);
+    $sheet->setCellValue("F" . $rowNumber, $jk);
     $rowNumber++;
     $no++;
 }

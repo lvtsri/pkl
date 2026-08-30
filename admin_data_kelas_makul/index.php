@@ -89,14 +89,16 @@
     <!-- /.content-header -->
   
   <!-- Main content -->
-    <div class="content">
+<div class="content">
         <div class="container-fluid">
             <form action="" method="post">
                 <div class="row">
                     <div class="col-2">
                         <?php 
                         $panggil_periode_akademik = mysqli_query($koneksi, "SELECT * FROM tb_akademik" )or die(mysqli_error($koneksi));
-
+                        
+                        // Menjaga nilai select agar tetap terpilih setelah tombol cari diklik
+                        $selected_periode = isset($_POST['semester']) ? $_POST['semester'] : '';
                         ?>
                         <div class="form-group">                    
                             <select class="form-control" name="semester" id="">
@@ -105,8 +107,12 @@
                                 while ($data_periode = mysqli_fetch_array($panggil_periode_akademik)){
                                     $kode_akd = $data_periode['kode_akd'];
                                     $semester = $data_periode['semester'];
-                                    $tahun = $data_periode['tahun'];?>
-                                <option value="<?= $kode_akd; ?>">
+                                    $tahun = $data_periode['tahun'];
+                                    
+                                    // Set selected option
+                                    $sel = ($selected_periode == $kode_akd) ? 'selected' : '';
+                                ?>
+                                <option value="<?= $kode_akd; ?>" <?= $sel; ?>>
                                   <?= $tahun?> - <?= ($semester == 'GL')? 'Ganjil' : 'Genap'?>
                                 </option>
                                 <?php
@@ -115,77 +121,82 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-6">
-                      <button type="submit" name="btn_cari" class="btn btn-warning mb-2"><i class="fas fa-search"></i> Tampilkan Data</button>
-                      <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-tambah-data">
-                        <i class="fas fa-plus"></i> 
-                        Tambah Data
+                    <div class="col-4">
+                      <button type="submit" name="btn_cari" class="btn btn-default mb-2">
+                        <i class="fas fa-search"></i> Filter
                       </button>
+                    </div>
+                    <div class="col-6 text-right">
+                      <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-tambah-data">
+                        <i class="fas fa-plus"></i> Tambah Data
+                      </button>
+                      <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modal-impor">
+                        <i class="fas fa-file-excel"></i> Impor Data
+                      </button>
+                      <a href="excel.php" type="button" class="btn btn-success mb-2" target="_blank">
+                        <i class="fas fa-file-excel"></i> Ekspor Data
+                      </a>
                     </div>
                 </div>
             </form>
-            <?php 
-            if (isset($_POST['btn_cari'])){
-              $filter = trim(mysqli_real_escape_string($koneksi, $_POST['semester']));
-            ?>
+
+            <!-- CARD DAN TABEL DIKELUARKAN DARI IF SUPAYA MUNCUL TERUS SEBAGAI DEFAULT -->
             <div class="row">
               <div class="col-md-12">
-                <div class="card card-primary">
+                <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title">Data Kelas Mata Kuliah untuk Periode Akademik: <?= $filter; ?></h3>
+                        <?php 
+                        // Judul card menyesuaikan apakah sedang difilter atau menampilkan semua
+                        $filter = isset($_POST['semester']) ? trim(mysqli_real_escape_string($koneksi, $_POST['semester'])) : '';
+                        $judul_card = !empty($filter) ? "Data Kelas Mata Kuliah untuk Periode Akademik: " . $filter : "Data Kelas Mata Kuliah";
+                        ?>
+                        <h3 class="card-title"><?= $judul_card; ?></h3>
                     </div>
                     <div class="card-body">
-                <?php
-                  $pengguna = $_SESSION['username'];
-                ?>
-                  <table id="example1" class="table table-bordered table-striped">
-                    <thead>
-                    <tr class="text-center">
-                      <th width="5%">No</th>
-                      <th>Nama Kelas</th>
-                      <th>Periode Akademik</th>
-                      <th>Mata Kuliah</th>
-                      <th>Jurusan</th>
-                      <th>Dosen</th>
-                      <th>Aksi</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                      $panggil_kelas = mysqli_query($koneksi, "SELECT * FROM tb_kelas_makul WHERE kode_akd = '$filter'")or die(mysqli_error($koneksi));
-                      $query_akd = mysqli_query($koneksi, "SELECT * FROM tb_akademik WHERE kode_akd = '$kode_akd'")or die(mysqli_error($koneksi));
-                      $query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul")or die(mysqli_error($koneksi));
-                      $query_jurusan = mysqli_query($koneksi, "SELECT * FROM tb_jurusan")or die(mysqli_error($koneksi));
-                      $query_dosen = mysqli_query($koneksi, "SELECT * FROM tb_dosen")or die(mysqli_error($koneksi));
+                      <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr class="text-center">
+                          <th width="5%">No</th>
+                          <th>Nama Kelas</th>
+                          <th>Periode Akademik</th>
+                          <th>Mata Kuliah</th>
+                          <th>Jurusan</th>
+                          <th>Dosen</th>
+                          <th>Aksi</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          <?php
+                          // Logika Query: Kalau ada filter, pakai WHERE. Kalau kosong, tampilkan SEMUA.
+                          if (!empty($filter)) {
+                              $panggil_kelas = mysqli_query($koneksi, "SELECT * FROM tb_kelas_makul WHERE kode_akd = '$filter'") or die(mysqli_error($koneksi));
+                          } else {
+                              $panggil_kelas = mysqli_query($koneksi, "SELECT * FROM tb_kelas_makul") or die(mysqli_error($koneksi));
+                          }
+              
+                          $no = 1;
+                          $rv = mysqli_num_rows($panggil_kelas);
+                          if ($rv > 0){
+                              while ($data = mysqli_fetch_array($panggil_kelas)){
+                                  $kode_kelas = $data['kode_kelas'];
+                                  $kode_akd = $data['kode_akd'];
+                                  $kode_makul = $data['kode_makul'];
+                                  $kode_jurusan = $data['kode_jurusan'];
+                                  $nik = $data['nik'];
+                                  $nama_kelas = $data['nama_kelas'];
 
-                      // $data_akd = mysqli_fetch_assoc($query_akd);
-                      // $data_makul = mysqli_fetch_assoc($query_makul);
-                      // $data_jurusan = mysqli_fetch_assoc($query_jurusan);
-                      // $data_dosen = mysqli_fetch_assoc($query_dosen);
-            
-                      $no = 1;
-                      $rv = mysqli_num_rows($panggil_kelas);
-                      if ($rv > 0){
-                          while ($data = mysqli_fetch_array($panggil_kelas)){
-                              $kode_kelas = $data['kode_kelas'];
-                              $kode_akd = $data['kode_akd'];
-                              $kode_makul = $data['kode_makul'];
-                              $kode_jurusan = $data['kode_jurusan'];
-                              $nik = $data['nik'];
-                              $nama_kelas = $data['nama_kelas'];
+                                  $query_akd = mysqli_query($koneksi, "SELECT * FROM tb_akademik WHERE kode_akd = '$kode_akd'");
+                                  $data_akd = mysqli_fetch_assoc($query_akd);
 
-                              $query_akd = mysqli_query($koneksi, "SELECT * FROM tb_akademik WHERE kode_akd = '$kode_akd'");
-                              $data_akd = mysqli_fetch_assoc($query_akd);
+                                  $query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul WHERE kode_makul = '$kode_makul'");
+                                  $data_makul = mysqli_fetch_assoc($query_makul);
 
-                              $query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul WHERE kode_makul = '$kode_makul'");
-                              $data_makul = mysqli_fetch_assoc($query_makul);
+                                  $query_jurusan = mysqli_query($koneksi, "SELECT * FROM tb_jurusan WHERE kode_jurusan = '$kode_jurusan'");
+                                  $data_jurusan = mysqli_fetch_assoc($query_jurusan);
 
-                              $query_jurusan = mysqli_query($koneksi, "SELECT * FROM tb_jurusan WHERE kode_jurusan = '$kode_jurusan'");
-                              $data_jurusan = mysqli_fetch_assoc($query_jurusan);
-
-                              $query_dosen = mysqli_query($koneksi, "SELECT * FROM tb_dosen WHERE nik = '$nik'");
-                              $data_dosen = mysqli_fetch_assoc($query_dosen);
-                              ?>
+                                  $query_dosen = mysqli_query($koneksi, "SELECT * FROM tb_dosen WHERE nik = '$nik'");
+                                  $data_dosen = mysqli_fetch_assoc($query_dosen);
+                          ?>
                               <tr class="text-center">
                                   <td><?= $no++ ?></td>
                                   <td><?= $kode_kelas ?> - <?= $nama_kelas; ?></td>
@@ -214,27 +225,22 @@
                                   </td>
                               </tr>
                               <?php
-                          }
-                      } else {
+                              }
+                          } else {
+                              ?>
+                              <tr>
+                                  <td colspan="7">Data tidak ditemukan</td> 
+                              </tr>
+                              <?php
+                          }   
                           ?>
-                          <tr>
-                              <td colspan="7">Data tidak ditemukan</td> 
-                          </tr>
-                          <?php
-                      }   
-                      ?>
-                      </tbody>
-                    <tfoot>
-                      <!--  -->
-                    </tfoot>
-                  </table>
+                          </tbody>
+                      </table>
                     </div>
                 </div>
               </div>
             </div>
-            <?php 
-            }
-            ?>
+
         </div>
       <!-- /.container-fluid -->
     </div>
@@ -504,6 +510,73 @@
     <!-- /.modal-dialog -->
   </div>
 
+  <!-- MODAL IMPOR -->
+  <div class="modal fade" id="modal-impor">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Impor Data Kelas Makul</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="impor.php" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="file">Upload File</label>
+              <input type="file" class="form-control" name="file_excel" required>
+            </div>
+            <!-- Template -->
+            <div class="form-group">
+              <label for="">Download Template File</label><br>
+              <a href="../admin_data_mhs/template/template_data_mhs_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Mahasiswa
+              </a>
+              <a href="../admin_data_dosen/template/template_data_dosen_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Dosen
+              </a>
+              <a href="../admin_data_makul/template/template_data_makul_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Mata Kuliah
+              </a>
+            </div>
+            <div class="form-group">
+              <a href="../admin_data_kelas_makul/template/template_kelas_makul_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Kelas
+              </a>
+              <a href="../admin_detail_kelas_makul/template/template_mhs_kls_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i>
+                Detail Kelas
+              </a>
+              <a href="../admin_jurusan/template/template_jurusan_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Jurusan
+              </a>
+              <a href="../admin_data_akademik/template/template_akademik_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Akademik
+              </a>
+            </div>
+            <!-- End template -->
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="submit" name="btn_impor" class="btn btn-success">
+              <!-- <i class="fas fa-plus"></i> -->
+              Impor Data
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+  
   <!-- Main Footer -->
   <?php
   include '../footer.php';

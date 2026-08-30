@@ -104,12 +104,16 @@
                 <a href="reset.php" type="button" class="btn btn-danger mb-2" onclick="return confirm('Anda yakin ingin mereset seluruh data dosen? Tindakan ini tidak dapat dikembalikan')">
                   <i class="fas fa-exclamation-triangle"></i> Reset Data
                 </a>
-                <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-impor">
+                <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modal-impor">
                   <i class="fas fa-file-excel"></i> 
                   Impor Data
                 </button>
                 <a href="pdf.php" type="button" class="btn btn-danger mb-2" target="_blank">
                   <i class="fas fa-file-pdf"></i> 
+                  Ekspor Data
+                </a>
+                <a href="excel.php" type="button" class="btn btn-success mb-2" target="_blank">
+                  <i class="fas fa-file-excel"></i> 
                   Ekspor Data
                 </a>
 
@@ -365,10 +369,37 @@
               <label for="file">Upload File</label>
               <input type="file" class="form-control" name="file_excel" required>
             </div>
+            <!-- Template -->
             <div class="form-group">
-              <label for="template">Download Template Excel</label><br>
-              <a href="template/template_data_dosen_kosongan.xls" class="btn btn-success" download><i class="fas fa-download"></i> Download</a>
+              <label for="">Download Template File</label><br>
+              <a href="../admin_data_mhs/template/template_data_mhs_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Mahasiswa
+              </a>
+              <a href="../admin_data_dosen/template/template_data_dosen_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Dosen
+              </a>
+              <a href="../admin_data_makul/template/template_data_makul_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Mata Kuliah
+              </a>
             </div>
+            <div class="form-group">
+              <a href="../admin_detail_kelas_makul/template/template_mhs_kls_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Detail Kelas Makul
+              </a>
+              <a href="../admin_jurusan/template/template_jurusan_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Jurusan
+              </a>
+              <a href="../admin_data_akademik/template/template_akademik_kosongan.xls" class="btn btn-success" download>
+                <i class="fas fa-download"></i> 
+                Periode Akademik
+              </a>
+            </div>
+            <!-- End template -->
           </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>

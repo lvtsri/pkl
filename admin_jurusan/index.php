@@ -107,9 +107,13 @@ if($authority != 'A'){
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-                <A href="tambah.php" class="btn btn-primary mb-2">
+                <a href="tambah.php" class="btn btn-primary mb-2">
                     <i class="fas fa-plus"></i> 
                     Tambah Data
+                </a>
+                <a href="excel.php" type="button" class="btn btn-success mb-2" target="_blank">
+                  <i class="fas fa-file-excel"></i> 
+                  Ekspor Data
                 </a>
                 <?php
                     $pengguna = $_SESSION['username'];

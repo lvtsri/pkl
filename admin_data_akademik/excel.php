@@ -7,19 +7,19 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 ob_start();
 
-$nama_file = "Data-Makul-" . date('Y-m-d');
-$query_makul = mysqli_query($koneksi, "SELECT * FROM tb_makul")or die(mysqli_error($koneksi));
+$nama_file = "Data-Periode-Akademik-" . date('Y-m-d');
+$query_akademik = mysqli_query($koneksi, "SELECT * FROM tb_akademik")or die(mysqli_error($koneksi));
 
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
-$sheet->setTitle('Data Makul');
+$sheet->setTitle('Data Periode Akademik');
 
 // Set header cells
 $sheet->setCellValue('A1', 'No');
-$sheet->setCellValue('B1', 'Kode Makul');
-$sheet->setCellValue('C1', 'Nama Makul');
-$sheet->setCellValue('D1', 'Jumlah SKS');
-$sheet->setCellValue('E1', 'Jumlah CPMK');
+$sheet->setCellValue('B1', 'Kode Akademik');
+$sheet->setCellValue('C1', 'Semester');
+$sheet->setCellValue('D1', 'Tahun');
+$sheet->setCellValue('E1', 'Aktif');
 
 $styleArray = [
     'borders' => [
@@ -38,17 +38,17 @@ foreach (array('B', 'C', 'D', 'E') as $columnID) {
 
 $no = 1;
 $rowNumber = 2;
-while ($data = mysqli_fetch_assoc($query_makul)) {
-    $kode = $data['kode_makul'];
-    $nama = $data['nama_makul'];
-    $sks = $data['jml_sks'];
-    $cpmk = $data['jml_cpmk'];
+while ($data = mysqli_fetch_assoc($query_akademik)) {
+    $kode = $data['kode_akd'];
+    $sem = $data['semester'];
+    $th = $data['tahun'];
+    $aktif = $data['is_active'];
 
     $sheet->setCellValue("A" . $rowNumber, $no);
     $sheet->setCellValue("B" . $rowNumber, $kode);
-    $sheet->setCellValue("C" . $rowNumber, $nama);
-    $sheet->setCellValue("D" . $rowNumber, $sks);
-    $sheet->setCellValue("E" . $rowNumber, $cpmk);
+    $sheet->setCellValue("C" . $rowNumber, $sem);
+    $sheet->setCellValue("D" . $rowNumber, $th);
+    $sheet->setCellValue("E" . $rowNumber, $aktif);
     $rowNumber++;
     $no++;
 }

@@ -87,7 +87,7 @@
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+    
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
@@ -104,12 +104,16 @@
                 <a href="reset.php" type="button" class="btn btn-danger mb-2" onclick="return confirm('Anda yakin mereset seluruh data mahasiswa? Tindakan ini tidak dapat dikembalikan')">
                   <i class="fas fa-exclamation-triangle"></i> Reset Data
                 </a>
-                <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-impor">
+                <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modal-impor">
                   <i class="fas fa-file-excel"></i> 
                   Impor Data
                 </button>
                 <a href="pdf.php" type="button" class="btn btn-danger mb-2" target="_blank">
                   <i class="fas fa-file-pdf"></i> 
+                  Ekspor Data
+                </a>
+                <a href="excel.php" type="button" class="btn btn-success mb-2" target="_blank">
+                  <i class="fas fa-file-excel"></i> 
                   Ekspor Data
                 </a>
 
@@ -132,9 +136,10 @@
                   <tbody>
                     <?php
                     $panggil_data_user = mysqli_query($koneksi, "SELECT * FROM tb_mahasiswa")or die(mysqli_error($koneksi));
-
+                    
                     $no = 1;
                     $rv = mysqli_num_rows($panggil_data_user);
+
                     if ($rv > 0){
                         while ($data = mysqli_fetch_array($panggil_data_user)){
                             $nim = $data['nim'];

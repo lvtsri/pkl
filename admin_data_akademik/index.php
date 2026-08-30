@@ -101,6 +101,10 @@
                   <i class="fas fa-plus"></i> 
                   Tambah Data
                 </a>
+                <a href="excel.php" type="button" class="btn btn-success mb-2" target="_blank">
+                  <i class="fas fa-file-excel"></i> 
+                  Ekspor Data
+                </a>
 
                 <?php
                   $pengguna = $_SESSION['username'];

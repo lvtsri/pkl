@@ -137,9 +137,13 @@ if($authority != 'A'){
                 <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-tambah">
                   <i class="fas fa-plus"></i> Tambah Mahasiswa
                 </button>
-                <button type="button" class="btn btn-success mb-2" data-toggle="modal" data-target="#modal-impor">
+                <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modal-impor">
                   <i class="fas fa-file-excel"></i> Impor Data
                 </button>
+                <a href="excel.php?data=<?= $kode_kelas; ?>" type="button" class="btn btn-success mb-2" target="_blank">
+                  <i class="fas fa-file-excel"></i> 
+                  Ekspor Data
+                </a>
                 <form action="" method="POST" onsubmit="return confirm('Yakin ingin mereset seluruh data mahasiswa di kelas ini? Tindakan ini tidak dapat dikembalikan');">
                     <input type="text" name="kode_kelas" value="<?= $kode_kelas; ?>" hidden>                    
                     <button type="submit" class="btn btn-danger mb-2" name="btn_reset_kelas">
