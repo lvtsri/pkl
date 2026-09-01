@@ -4,7 +4,7 @@ require_once '../database/koneksi.php';
 
 if (isset($_POST['btn_impor'])){    //triger setelah btn_impor di klik
     $file = $_FILES['file_excel']['name'];      //nampung nama file yg di upload
-    $extension = explode('.', $file);   //pisahin ekstensi dari nama
+    $extension = explode('.', $file);   //pisahin nama file berdasarkan titik
     
     $nama_file = 'file'.round(microtime(true)).'.'.end($extension);     //buat nama file baru
    

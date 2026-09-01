@@ -122,8 +122,8 @@
                         </div>
                     </div>
                     <div class="col-4">
-                      <button type="submit" name="btn_cari" class="btn btn-default mb-2">
-                        <i class="fas fa-search"></i> Filter
+                      <button type="submit" name="btn_cari" class="btn btn-primary mb-2">
+                        <i class="fas fa-search"></i> Tampilkan Data
                       </button>
                     </div>
                     <div class="col-6 text-right">
@@ -143,7 +143,7 @@
             <!-- CARD DAN TABEL DIKELUARKAN DARI IF SUPAYA MUNCUL TERUS SEBAGAI DEFAULT -->
             <div class="row">
               <div class="col-md-12">
-                <div class="card card-default">
+                <div class="card card-primary">
                     <div class="card-header">
                         <?php 
                         // Judul card menyesuaikan apakah sedang difilter atau menampilkan semua
@@ -199,11 +199,11 @@
                           ?>
                               <tr class="text-center">
                                   <td><?= $no++ ?></td>
-                                  <td><?= $kode_kelas ?> - <?= $nama_kelas; ?></td>
-                                  <td><?= $kode_akd; ?> - <?= $data_akd['semester'] == 'GN' ? 'Genap' : 'Ganjil'; ?></td>
-                                  <td><?= $kode_makul; ?> - <?= $data_makul['nama_makul']; ?></td>
-                                  <td><?= $kode_jurusan; ?> - <?= $data_jurusan['nama_jurusan']; ?></td>
-                                  <td><?= $nik; ?> - <?= $data_dosen['nama']; ?></td>
+                                  <td><?= $nama_kelas; ?></td>
+                                  <td><?= $data_akd['tahun']; ?> - <?= $data_akd['semester'] == 'GN' ? 'Genap' : 'Ganjil'; ?></td>
+                                  <td><?= $data_makul['nama_makul']; ?></td>
+                                  <td><?= $data_jurusan['nama_jurusan']; ?></td>
+                                  <td><?= $data_dosen['nama']; ?></td>
                                   <td>
                                     <a href="../admin_detail_kelas_makul/index.php?data=<?= $kode_kelas; ?>" class="btn btn-primary btn-sm">
                                       <i class="fas fa-eye"></i>
@@ -221,6 +221,9 @@
                                     </button>
                                     <a href="hapus.php?data=<?= $data['kode_kelas']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
                                       <i class="fas fa-trash"></i>
+                                    </a>
+                                    <a href="presensi.php?data=<?= $data['kode_kelas']; ?>" class="btn btn-warning btn-sm">
+                                      <i class="fas fa-qrcode"></i>
                                     </a>
                                   </td>
                               </tr>
