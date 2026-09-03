@@ -222,7 +222,7 @@
                                     <a href="hapus.php?data=<?= $data['kode_kelas']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ga bang?')">
                                       <i class="fas fa-trash"></i>
                                     </a>
-                                    <a href="presensi.php?data=<?= $data['kode_kelas']; ?>" class="btn btn-warning btn-sm">
+                                    <a href="pertemuan.php?data=<?= $data['kode_kelas']; ?>" class="btn btn-success btn-sm">
                                       <i class="fas fa-qrcode"></i>
                                     </a>
                                   </td>

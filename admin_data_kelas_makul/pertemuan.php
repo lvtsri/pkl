@@ -131,80 +131,37 @@ if($authority != 'A'){
               
               <div class="card card-primary card-outline">
                 <div class="card-body">
-                <a href="../admin_data_kelas_makul/" class="btn btn-default mb-2">
-                  <i class="fas fa-arrow-left"></i> Kembali
-                </a>
                 <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal-tambah">
-                  <i class="fas fa-plus"></i> Tambah Mahasiswa
-                </button>
-                <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modal-impor">
-                  <i class="fas fa-file-excel"></i> Impor Data
-                </button>
-                <a href="excel.php?data=<?= $kode_kelas; ?>" type="button" class="btn btn-success mb-2" target="_blank">
-                  <i class="fas fa-file-excel"></i> 
-                  Ekspor Data
-                </a>
-                <form action="" method="POST" onsubmit="return confirm('Yakin ingin mereset seluruh data mahasiswa di kelas ini? Tindakan ini tidak dapat dikembalikan');">
-                    <input type="text" name="kode_kelas" value="<?= $kode_kelas; ?>" hidden>                    
-                    <button type="submit" class="btn btn-danger mb-2" name="btn_reset_kelas">
-                      <i class="fas fa-exclamation-triangle"></i> Reset Kelas
+                    <i class="fas fa-plus"></i> Tambah Pertemuan
                     </button>
-                </form>
-
-                <?php 
-                if (isset($_POST['btn_reset_kelas'])) {
-                    $kls_target = mysqli_real_escape_string($koneksi, $_POST['kode_kelas']);
-
-                    $query_reset = mysqli_query($koneksi, "DELETE FROM tb_detail_kls_mk WHERE kode_kelas = '$kls_target'") or die (mysqli_error($koneksi));
-
-                    if ($query_reset) {
-                        echo '
-                        <script>
-                            alert("Seluruh data mhs di kelas ini telah dihapus!");
-                            window.location.href="index.php?data=' . $kls_target . '";
-                        </script>';
-                    } else {
-                        $error_msg = mysqli_real_escape_string($koneksi, mysqli_error($koneksi));
-                        echo '
-                        <script>
-                            alert("Gagal mereset data: ' . $error_msg . '");
-                            window.location.href="index.php?data=' . $kls_target . '";
-                        </script>';
-                    }
-                }
-                ?>
-
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr class="text-center">
                     <th width="5%">No</th>
-                    <th>NIM</th>
-                    <th>Nama Mahasiswa</th>
+                    <th>Pertemuan ke-</th>
+                    <th>Judul Pertemuan</th>
+                    <th>Tanggal</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php
-                    $query_detail_kls = mysqli_query($koneksi, "
-                      SELECT d.id, m.nim, m.nama 
-                      FROM tb_detail_kls_mk d
-                      JOIN tb_mahasiswa m ON d.nim = m.nim
-                      WHERE d.kode_kelas = '$kode_kelas'
-                    ") or die(mysqli_error($koneksi));
+                    $query_pertemuan = mysqli_query($koneksi, "SELECT * FROM tb_pertemuan WHERE kode_kelas = '$kode_kelas'") or die(mysqli_error($koneksi));
 
                     $no = 1;
-                    $rv = mysqli_num_rows($query_detail_kls);
+                    $rv = mysqli_num_rows($query_pertemuan);
 
                     if ($rv > 0){
-                      while ($data = mysqli_fetch_assoc($query_detail_kls)){
+                      while ($data = mysqli_fetch_assoc($query_pertemuan)){
                   ?>
                         <tr class="text-center">
                             <td><?= $no++ ?></td>
-                            <td><?= $data['nim']; ?></td>
-                            <td><?= $data['nama']; ?></td>
+                            <td><?= $data['pertemuan_ke']; ?></td>
+                            <td><?= $data['judul_pertemuan']; ?></td>
+                            <td><?= date('d-m-Y', strtotime($data['tanggal'])) ?></td>
                             <td>
-                              <a href="hapus.php?id=<?= $data['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakinnnn?')">
-                                <i class="fas fa-trash"></i>
+                              <a href="presensi.php?data=<?= $data['id'] ?>" class="btn btn-warning">
+                                <i class="fas fa-qrcode"></i>
                               </a>
                             </td>
                         </tr>
@@ -213,7 +170,7 @@ if($authority != 'A'){
                     } else {
                   ?>
                         <tr>
-                            <td colspan="4" class="text-center">Data tidak ditemukan di kelas ini</td> 
+                            <td colspan="5" class="text-center">Data tidak ditemukan di kelas ini</td> 
                         </tr>
                   <?php
                     }   
@@ -229,43 +186,39 @@ if($authority != 'A'){
     </div>
   </div>
 
+    <?php
+        if(isset($_POST['btn_hapus'])){
+
+        }
+    ?>
+
   <!-- MODAL TAMBAH DATA-->
   <div class="modal fade" id="modal-tambah">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Tambah Mahasiswa <?= $info['nama_kelas']; ?></h4>
+          <h4 class="modal-title">Tambah Pertemuan</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="tambah.php" method="post">
+        <form action="" method="post">
           <div class="modal-body">
             <div class="form-group">
-              <label>Mahasiswa</label>
-              <select class="form-control" name="nim" required>
-                <option value="">-- Pilih Mahasiswa --</option>
-                  <?php 
-                    $query_mhs = mysqli_query($koneksi, "SELECT * FROM tb_mahasiswa");
-                    while($data_mhs = mysqli_fetch_array($query_mhs)){
-                      $nim = $data_mhs['nim'];
-                      $nama = $data_mhs['nama'];
-                    ?>
-                    <option value="<?= $nim; ?>">
-                      <?= $nim ?> - <?= $nama ?>
-                    </option>
-                  ?>
-                  <?php
-                    }
-                  ?>
-              </select>
-              <input type="text" name="kode_kelas" value="<?= $kode_kelas; ?>" hidden>
+                <input type="text" name="kode_kelas" value="<?= $kode_kelas; ?>" hidden>
+              <label>Judul Pertemuan</label>
+              <input type="text" class="form-control" name="judul_pertemuan" placeholder="Masukkan judul pertemuan" required>
             </div>
-          </div>
 
+            <div class="form-group">
+              <label>Tanggal Pertemuan</label>
+              <input type="date" class="form-control" name="tanggal" required>
+            </div>
+
+          </div>
           <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-            <button type="submit" name="btn_tambah" class="btn btn-primary">
+            <button type="submit" name="btn_tambah_pertemuan" class="btn btn-primary">
               <i class="fas fa-plus"></i>
               Tambah
             </button>
@@ -277,6 +230,83 @@ if($authority != 'A'){
     <!-- /.modal-dialog -->
   </div>
 
+  <?php
+    if (isset($_POST['btn_tambah_pertemuan'])){
+        $kode_kelas = trim(mysqli_real_escape_string($koneksi, $_POST['kode_kelas']));
+        $tanggal = trim(mysqli_real_escape_string($koneksi, $_POST['tanggal']));
+        $judul = trim(mysqli_real_escape_string($koneksi, $_POST['judul_pertemuan']));
+
+        $tgl_skrg = Date('d-m-Y');
+        if($tanggal < $tgl_skrg){
+            echo '<script>
+                alert("Tanggal pertemuan minimal hari ini!")
+                window.location.href="../admin_data_kelas_makul/pertemuan.php?data=$kode_kelas";
+            </script>';
+        }
+
+        $pertemuan_ke = 1;
+        $panggil_pertemuan = mysqli_query($koneksi, "SELECT MAX(pertemuan_ke) as pertemuan FROM tb_pertemuan WHERE kode_kelas = '$kode_kelas'")or die(mysqli_error($koneksi));
+        $data_pertemuan = mysqli_fetch_array($panggil_pertemuan);
+        $pertemuan_terakhir = $data_pertemuan['pertemuan'];
+
+        $status_pertemuan = '1';
+
+        if ($pertemuan_terakhir < 1) {
+            $query_simpan = mysqli_query($koneksi, "INSERT INTO tb_pertemuan VALUES 
+                (null, '$kode_kelas','$tanggal','$judul', '$status_pertemuan', '$pertemuan_ke')") or die(mysqli_error($koneksi));
+
+            $id_pertemuan = mysqli_insert_id($koneksi);
+
+            $query_peserta = mysqli_query($koneksi, "SELECT nim FROM tb_detail_kls_mk WHERE kode_kelas = '$kode_kelas'")or die(mysqli_error($koneksi));
+
+            $rv = mysqli_num_rows($query_peserta);
+
+            if($rv > 0){
+              $status_kehadiran = 'alpha';
+              while ($data_peserta = mysqli_fetch_array($query_peserta)) {
+                $nim = $data_peserta['nim'];
+                $query_simpan_peserta = mysqli_query($koneksi, "INSERT INTO tb_presensi VALUES
+                  (null, '$id_pertemuan', '$nim', '$status_kehadiran')
+                ")or die(mysqli_error($koneksi));
+              }
+            }
+            
+            echo "
+                <script>
+                    alert('Pertemuan telah berhasil disimpan');
+                    window.location.href='../admin_data_kelas_makul/presensi.php?data=$id_pertemuan';
+                </script>
+            ";
+        } else {
+            $pertemuan_terakhir++;
+            $query_simpan = mysqli_query($koneksi, "INSERT INTO tb_pertemuan VALUES 
+                (null, '$kode_kelas','$tanggal','$judul', '$status_pertemuan', '$pertemuan_terakhir')") or die(mysqli_error($koneksi));
+
+            $id_pertemuan = mysqli_insert_id($koneksi);
+
+            $query_peserta = mysqli_query($koneksi, "SELECT nim FROM tb_detail_kls_mk WHERE kode_kelas = '$kode_kelas'")or die(mysqli_error($koneksi));
+
+            $rv = mysqli_num_rows($query_peserta);
+
+            if($rv > 0){
+              $status_kehadiran = 'alpha';
+              while ($data_peserta = mysqli_fetch_array($query_peserta)) {
+                $nim = $data_peserta['nim'];
+                $query_simpan_peserta = mysqli_query($koneksi, "INSERT INTO tb_presensi VALUES
+                  (null, '$id_pertemuan', '$nim', '$status_kehadiran')
+                ")or die(mysqli_error($koneksi));
+              }
+            }
+
+            echo "
+                <script>
+                    alert('Pertemuan telah berhasil disimpan');
+                    window.location.href='../admin_data_kelas_makul/presensi.php?data=$id_pertemuan';
+                </script>
+            ";
+        }
+    }
+  ?>
   
   <!-- MODAL IMPOR -->
   <div class="modal fade" id="modal-impor">
