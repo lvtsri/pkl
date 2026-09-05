@@ -124,6 +124,17 @@
               $_SESSION['pin'] = $pin;
               $_SESSION['nama'] = $nama;
 
+              if ($peran == 'M') {
+                  $_SESSION['nim'] = $username_aktif;
+                  unset($_SESSION['nik']);
+              } elseif ($peran == 'D') {
+                  $_SESSION['nik'] = $username_aktif;
+                  unset($_SESSION['nim']);
+              } else {
+                  unset($_SESSION['nik']);
+                  unset($_SESSION['nim']);
+              }
+
               // Hapus session temporary
               unset($_SESSION['temp_username']);
 

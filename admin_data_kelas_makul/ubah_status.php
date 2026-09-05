@@ -29,11 +29,13 @@ if (isset($_GET['id_pertemuan'])) {
         if ($query_update) {
             echo 
             '<script>
+                alert("Status presensi pertemuan telah berubah!");
                 window.location.href="../admin_data_kelas_makul/presensi.php?data='.$id_pertemuan.'";
             </script>';
         } else {
             echo 
             '<script>
+                alert("Gagal mengubah status presensi");
                 window.location.href="../admin_data_kelas_makul/presensi.php?data='.$id_pertemuan.'";
             </script>';
         }

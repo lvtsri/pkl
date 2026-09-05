@@ -228,7 +228,8 @@ if($authority != 'A'){
                     </div>
                     <div>
                       Scan QR untuk melakukan presensi
-                    </div>
+                    </div><br>
+                    <p id="countdown_timer" class="text-bold text-red">Presensi telah ditutup</p>
                   </div>
                 </div>
 
@@ -364,6 +365,43 @@ include '../script.php';
     $(e.currentTarget).find('input[name="id"]').val(id);
   })
 </script>
+
+<!-- Countdown Timer -->
+<?php 
+  if ($status_pertemuan == '1') { 
+?>
+  <script>
+  var countDownDate = new Date().getTime() + (60 * 1000);
+
+  // Update the count down every 1 second
+  var x = setInterval(function() {
+
+    // Get today's date and time
+    var now = new Date().getTime();
+
+    // Find the distance between now and the count down date
+    var distance = countDownDate - now;
+
+    // Time calculations for minutes and seconds
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Display the result in the element
+    document.getElementById("countdown_timer").innerHTML = minutes + "menit " + seconds + "detik";
+
+    // If the count down is finished, write some text
+    if (distance < 0) {
+      clearInterval(x);
+      document.getElementById("countdown_timer").innerHTML = "Waktu Habis!";
+      // ke ubah_status
+      window.location.href = "ubah_status.php?id_pertemuan=<?= $id_pertemuan; ?>";
+    }
+  }, 1000);
+  </script>
+  <!-- //^o^// -->
+<?php
+  }
+?>
 
 </body>
 </html>

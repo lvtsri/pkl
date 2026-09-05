@@ -16,6 +16,14 @@
         </li>
 
         <li class="nav-item">
+            <a href="../dosen_kelas_mk/" class="nav-link
+                <?= $aktif = ($hal == 'dosen_kelas_mk') ? 'active' : '' ?>">
+            <i class="nav-icon fas fa-lock"></i>
+            <p>Kelas Mata Kuliah</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="../dosen_password/" class="nav-link
                 <?= $aktif = ($hal == 'dosen_pass') ? 'active' : '' ?>">
             <i class="nav-icon fas fa-lock"></i>

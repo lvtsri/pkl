@@ -13,7 +13,7 @@ if (isset($_POST['btn_tambah_admin'])){
     } elseif ($peran == 'M') {
         $pin = 123456;
     } else {
-        $pin = 696969;
+        $pin = 123456;
     }
 
     $cek_user = mysqli_query($koneksi, "SELECT username FROM tb_pengguna WHERE username = '$username'") or die (mysqli_error($koneksi));
